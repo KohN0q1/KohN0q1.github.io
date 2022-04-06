@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>渗透 - 分类 - 高诺琪&#39;s Blog</title>
+        <link>https://KohN0q1.github.io/categories/%E6%B8%97%E9%80%8F/</link>
+        <description>渗透 - 分类 - 高诺琪&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 12 Aug 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://KohN0q1.github.io/categories/%E6%B8%97%E9%80%8F/" rel="self" type="application/rss+xml" /><item>
+    <title>反弹shell</title>
+    <link>https://KohN0q1.github.io/%E5%8F%8D%E5%BC%B9shell/</link>
+    <pubDate>Wed, 12 Aug 2020 00:00:00 &#43;0000</pubDate><author>
+        <name>高诺琪</name>
+    </author><guid>https://KohN0q1.github.io/%E5%8F%8D%E5%BC%B9shell/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
+</rss>

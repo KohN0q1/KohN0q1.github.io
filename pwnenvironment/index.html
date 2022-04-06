@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title class="pjax-title">Pwn环境搭建 - 高诺琪&#39;s Blog</title><meta name="Description" content="宁静致远"><meta property="og:title" content="Pwn环境搭建" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://KohN0q1.github.io/pwnenvironment/" /><meta property="og:image" content="https://KohN0q1.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-25T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://KohN0q1.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Pwn环境搭建"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="canonical" href="https://KohN0q1.github.io/pwnenvironment/" /><link rel="prev" href="https://KohN0q1.github.io/php%E5%9F%BA%E7%A1%80/" /><link rel="next" href="https://KohN0q1.github.io/basicrop/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Pwn环境搭建",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/KohN0q1.github.io\/pwnenvironment\/"
+        },"genre": "posts","wordcount":  2991 ,
+        "url": "https:\/\/KohN0q1.github.io\/pwnenvironment\/","datePublished": "2020-10-25T00:00:00+00:00","dateModified": "2020-10-25T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "高诺琪"
+            },"description": ""
+    }
+    </script></head>
+
+<body header-desktop="auto" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('dark' === 'light' || 'dark' === 'dark' || 'dark' === 'black') setTheme('dark'), saveTheme('dark'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/friend/"> 友链 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="高诺琪&#39;s Blog">高诺琪&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/friend/" title="">友链</a><a class="menu-item" href="/about/" title="">关于</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#换源">换源</a></li>
+    <li><a href="#pip">pip</a></li>
+    <li><a href="#pwntools">pwntools</a></li>
+    <li><a href="#pwndbg">pwndbg</a></li>
+    <li><a href="#one_gadget">one_gadget</a></li>
+    <li><a href="#libcsearcher">LibcSearcher</a></li>
+    <li><a href="#main_arena_offset">main_arena_offset</a></li>
+    <li><a href="#32位库">32位库</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#nx">NX</a></li>
+    <li><a href="#canary">CANARY</a></li>
+    <li><a href="#fortify">FORTIFY</a></li>
+    <li><a href="#relro">RELRO</a></li>
+    <li><a href="#pie">PIE</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#字节序">字节序</a></li>
+    <li><a href="#寄存器">寄存器</a></li>
+    <li><a href="#指令">指令</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#连接">连接</a></li>
+    <li><a href="#context">context</a></li>
+    <li><a href="#io">IO</a></li>
+    <li><a href="#打解包">打/解包</a></li>
+    <li><a href="#elf">ELF</a></li>
+    <li><a href="#shellcraft">shellcraft</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Pwn环境搭建</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="/" title="Author" rel=" author" class="author">高诺琪</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/pwn/"><i class="far fa-folder fa-fw"></i>pwn</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-25">2020-10-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-10-25">2020-10-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2991 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#换源">换源</a></li>
+    <li><a href="#pip">pip</a></li>
+    <li><a href="#pwntools">pwntools</a></li>
+    <li><a href="#pwndbg">pwndbg</a></li>
+    <li><a href="#one_gadget">one_gadget</a></li>
+    <li><a href="#libcsearcher">LibcSearcher</a></li>
+    <li><a href="#main_arena_offset">main_arena_offset</a></li>
+    <li><a href="#32位库">32位库</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#nx">NX</a></li>
+    <li><a href="#canary">CANARY</a></li>
+    <li><a href="#fortify">FORTIFY</a></li>
+    <li><a href="#relro">RELRO</a></li>
+    <li><a href="#pie">PIE</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#字节序">字节序</a></li>
+    <li><a href="#寄存器">寄存器</a></li>
+    <li><a href="#指令">指令</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#连接">连接</a></li>
+    <li><a href="#context">context</a></li>
+    <li><a href="#io">IO</a></li>
+    <li><a href="#打解包">打/解包</a></li>
+    <li><a href="#elf">ELF</a></li>
+    <li><a href="#shellcraft">shellcraft</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="pwn虚拟机搭建" class="headerLink">
+    <a href="#pwn%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%90%ad%e5%bb%ba" class="header-mark"></a>Pwn虚拟机搭建</h1><p>虚拟机：Ubuntu16.04</p>
+<h2 id="换源" class="headerLink">
+    <a href="#%e6%8d%a2%e6%ba%90" class="header-mark"></a>换源</h2><p>备份</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>换阿里云的源
+sudo vim /etc/apt/sources.list</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial main
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial universe
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial universe
+</span></span><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main
+</span></span><span class="line"><span class="cl">deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+</span></span><span class="line"><span class="cl">deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更新</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update  <span class="c1">#更新软件包列表</span>
+</span></span><span class="line"><span class="cl">sudo apt-get -f install <span class="c1">#休复损坏的软件包，尝试卸载出错的包，重新安装正确版本的。</span>
+</span></span><span class="line"><span class="cl">sudo apt-get upgrade  <span class="c1">#升级系统中的所有软件包</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pip" class="headerLink">
+    <a href="#pip" class="header-mark"></a>pip</h2><p>安装pip</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span>
+</span></span><span class="line"><span class="cl"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">pip</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>临时换源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install 包名 -i https://pypi.tuna.tsinghua.edu.cn/simple
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>永久换源
+vim ~/.pip/pip.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>global<span class="o">]</span>
+</span></span><span class="line"><span class="cl">index-url <span class="o">=</span> https://pypi.tuna.tsinghua.edu.cn/simple
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>升级pip</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo pip install --upgrade pip
+</span></span><span class="line"><span class="cl">sudo pip3 install --upgrade pip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pwntools" class="headerLink">
+    <a href="#pwntools" class="header-mark"></a>pwntools</h2><p>pwntools是一个CTF框架和漏洞利用开发库，用Python开发，由rapid设计，旨在让使用者简单快速的编写exploit。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo pip install pwntools
+</span></span><span class="line"><span class="cl">sudo pip3 install pwntools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>验证pwntools是否安装成功，回显<code>b'1\xc0'</code>即成功安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">asm</span><span class="p">(</span><span class="s2">&#34;xor eax,eax&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="sa">b</span><span class="s1">&#39;1</span><span class="se">\xc0</span><span class="s1">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装pwntools会附带安装 <code>ROPgadget</code> 和 <code>checksec</code></p>
+<h2 id="pwndbg" class="headerLink">
+    <a href="#pwndbg" class="header-mark"></a>pwndbg</h2><p>用于动态调试的gdb插件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/pwndbg/pwndbg
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> pwndbg
+</span></span><span class="line"><span class="cl">./setup.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>vim ~/.gdbinit</code> 查看是否写入配置文件成功</p>
+<h2 id="one_gadget" class="headerLink">
+    <a href="#one_gadget" class="header-mark"></a>one_gadget</h2><p>one-gadget会在libc里寻找execve(&rsquo;/bin/sh&rsquo;, NULL, NULL)的地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt -y install ruby
+</span></span><span class="line"><span class="cl">sudo gem install one_gadget
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="libcsearcher" class="headerLink">
+    <a href="#libcsearcher" class="header-mark"></a>LibcSearcher</h2><p>LibcSearcher可以通过泄露函数地址来确定libc版本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/lieanu/LibcSearcher.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> LibcSearcher
+</span></span><span class="line"><span class="cl">python setup.py develop
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在线查询libc函数偏移网站 <a href="https://libc.blukat.me/" target="_blank" rel="noopener noreffer">https://libc.blukat.me/</a></p>
+<h2 id="main_arena_offset" class="headerLink">
+    <a href="#main_arena_offset" class="header-mark"></a>main_arena_offset</h2><p>计算main_arena的偏移</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/bash-c/main_arena_offset
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="32位库" class="headerLink">
+    <a href="#32%e4%bd%8d%e5%ba%93" class="header-mark"></a>32位库</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install libc6-dev-i386
+</span></span><span class="line"><span class="cl">sudo apt-get install lib32z1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h1 id="linux保护机制" class="headerLink">
+    <a href="#linux%e4%bf%9d%e6%8a%a4%e6%9c%ba%e5%88%b6" class="header-mark"></a>Linux保护机制</h1><p>在Linux中有很多安全措施用来防护或降低程序遭受缓冲区攻击的风险，而要编写利用脚本就需要绕过这些防御机制，所以需要了解这些安全措施</p>
+<h2 id="nx" class="headerLink">
+    <a href="#nx" class="header-mark"></a>NX</h2><p>No-eXecute，栈不可执行，基本原理是将数据所在内存页标识为不可执行，当程序溢出成功转入shellcode时，程序会尝试在数据页面上执行指令，此时CPU就会抛出异常，而不是去执行恶意指令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 默认情况下，开启NX保护
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">z</span> <span class="n">execstack</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 禁用NX保护
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">z</span> <span class="n">noexecstack</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 开启NX保护
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在Windows下，类似的保护措施是DEP(Data Execution Prevention)数据执行保护</p>
+<h2 id="canary" class="headerLink">
+    <a href="#canary" class="header-mark"></a>CANARY</h2><p>启用canary后，函数开始执行的时候会先往栈里插入canary信息，当函数返回时验证插入的canary是否被修改，如果是，则说明发生了栈溢出，程序停止运行，在Windows下，这一机制被称为gs机制</p>
+<p>gcc在4.2版本中添加了-fstack-protecktor和-fstack-protector-all编译参数以支持栈保护功能，4.9新增了fstack-protector-strong编译参数让保护的范围更广</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>  <span class="c1">// 默认情况下，不开启Canary保护
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fno</span><span class="o">-</span><span class="n">stack</span><span class="o">-</span><span class="n">protector</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">//禁用栈保护
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fstack</span><span class="o">-</span><span class="n">protector</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">//启用堆栈保护，不过只为局部变量中含有char数组的函数插入保护代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fstack</span><span class="o">-</span><span class="n">protector</span><span class="o">-</span><span class="n">all</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">//启用堆栈保护，为所有函数插入保护代码
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="fortify" class="headerLink">
+    <a href="#fortify" class="header-mark"></a>FORTIFY</h2><p>fority其实非常轻微的检查，用于检查是否存在缓冲区溢出的错误。适用情形是程序采用大量的字符串或者内存操作函数，如memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets以及宽字符的变体</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 默认情况下，不会开这个检查
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">D_FORTIFY_SOURCE</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 较弱的检查，仅仅只会在编译时进行检查 (特别像某些头文件 #include &lt;string.h&gt;)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">D_FORTIFY_SOURCE</span><span class="o">=</span><span class="mi">2</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 较强的检查，程序执行时也会有检查 (如果检查到缓冲区溢出，就终止程序)，可能会导致程序的崩溃
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="relro" class="headerLink">
+    <a href="#relro" class="header-mark"></a>RELRO</h2><p>read only relocation，设置符号重定向表为只读或在程序启动时就解析并绑定所有动态符号，从而减少对 GOT（Global Offset Table）的攻击。RELRO为” Partial RELRO”，说明我们对GOT表具有写权限</p>
+<p>RELRO可分为：</p>
+<ul>
+<li>Partial RELRO(部分RELRO) //开启Partial RELRO后GOT表是可写的</li>
+<li>Full RELRO(完整RELRO)   //开启FULL RELRO后GOT表是只读的，不可写</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 默认情况下，是Partial RELRO
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">z</span> <span class="n">norelro</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 关闭，即No RELRO
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">z</span> <span class="n">lazy</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 部分开启，即Partial RELRO
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">z</span> <span class="n">now</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> <span class="c1">// 全部开启
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pie" class="headerLink">
+    <a href="#pie" class="header-mark"></a>PIE</h2><p>PIE(Position Independent Executables，位置无关可执行文件)，配合内存地址随机化机制（address space layout randomization)使用，其中ASLR由操作系统完成，而PIE则有编译器完成，并且ASLR有以下三种情况：</p>
+<ul>
+<li>0 - 表示关闭进程地址空间随机化</li>
+<li>1 - 表示将mmap的基址，stack和vdso页面随机化</li>
+<li>2 - 表示在1的基础上增加栈（heap）的随机化。</li>
+</ul>
+<p>liunx下关闭随机化的命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">sudo</span> <span class="o">-</span><span class="n">s</span> <span class="n">echo</span> <span class="mi">0</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">randomize_va_space</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>				<span class="c1">// 默认情况下，不开启PIE
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fpie</span> <span class="o">-</span><span class="n">pie</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>	<span class="c1">// 开启PIE，此时强度为1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fPIE</span> <span class="o">-</span><span class="n">pie</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>	<span class="c1">// 开启PIE，此时为最高强度2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fpic</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>		<span class="c1">// 开启PIC，此时强度为1，不会开启PIE
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">gcc</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">-</span><span class="n">o</span> <span class="n">test</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span>		<span class="c1">// 开启PIC，此时为最高强度2，不会开启PIE
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h1 id="汇编基础" class="headerLink">
+    <a href="#%e6%b1%87%e7%bc%96%e5%9f%ba%e7%a1%80" class="header-mark"></a>汇编基础</h1><h2 id="字节序" class="headerLink">
+    <a href="#%e5%ad%97%e8%8a%82%e5%ba%8f" class="header-mark"></a>字节序</h2><p>大端模式和小端模式：</p>
+<ul>
+<li>大端模式：高位字节数据存放在低地址处，低位数据存放在高地址处</li>
+<li>小端模式：高位字节数据存放在高地址处，低位数据存放在低地址处</li>
+</ul>
+<p>以0x12345678为例
+小端 \x78\x56\x34\x12
+大端 \x12\x34\x56\x78</p>
+<h2 id="寄存器" class="headerLink">
+    <a href="#%e5%af%84%e5%ad%98%e5%99%a8" class="header-mark"></a>寄存器</h2><p>寄存器是有限存贮容量的高速存贮部件，它们可用来暂存指令、数据和地址。以8086CPU为例，共有14个寄存器</p>
+<p><strong>数据寄存器</strong></p>
+<ul>
+<li>AX (Accumulator)  累加寄存器</li>
+<li>BX (Base) 基地址寄存器</li>
+<li>CX (Count)    计数器寄存器</li>
+<li>DX (Data) 数据寄存器</li>
+</ul>
+<p><strong>指针寄存器</strong></p>
+<ul>
+<li>SP (Stack Pointer)    堆栈指针寄存器</li>
+<li>BP (Base Pointer) 基指针寄存器</li>
+</ul>
+<p><strong>变址寄存器</strong></p>
+<ul>
+<li>SI (Source Index) 源变址寄存器</li>
+<li>DI (Destination Index)    目的变址寄存器</li>
+</ul>
+<p><strong>控制寄存器</strong></p>
+<ul>
+<li>IP (Instruction Pointer)  指令指针寄存器</li>
+<li>FLAG  标志寄存器</li>
+</ul>
+<p><strong>段寄存器</strong></p>
+<ul>
+<li>CS (Code Segment) 代码段寄存器</li>
+<li>DS (Data Segment) 数据段寄存器</li>
+<li>SS (Stack Segment)    堆栈段寄存器</li>
+<li>ES (Extra Segment)    附加段寄存器</li>
+</ul>
+<h2 id="指令" class="headerLink">
+    <a href="#%e6%8c%87%e4%bb%a4" class="header-mark"></a>指令</h2><p>常见汇编指令</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>中文</th>
+<th>格式</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mov</td>
+<td>传输指令</td>
+<td>MOV DST, SRC</td>
+<td>将 SRC 传至 DST</td>
+</tr>
+<tr>
+<td>XCHG</td>
+<td>交换指令</td>
+<td>XCHG OPER1,OPER2</td>
+<td>把oper1的内容与oper2的内容交换</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>加法指令</td>
+<td>ADD DEST,SRC</td>
+<td>两数相加</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>减法指令</td>
+<td>SUB DEST,SRC</td>
+<td>两数相减</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>与运算指令</td>
+<td>AND DEST，SRC</td>
+<td>同1得1，否则得0</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>或运算指令</td>
+<td>OR DEST，SRC</td>
+<td>同0得0，否则得1</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>异或运算</td>
+<td>XOR DEST，SRC</td>
+<td>相同得0不同得1</td>
+</tr>
+<tr>
+<td>LEA</td>
+<td>取地址指令</td>
+<td>LEA REC,OPRD</td>
+<td>把oprd的地址传送到rec</td>
+</tr>
+<tr>
+<td>PUSH</td>
+<td>压入堆栈指令</td>
+<td>PUSH SRC</td>
+<td>将 SRC 压入栈</td>
+</tr>
+<tr>
+<td>POP</td>
+<td>弹出堆栈指令</td>
+<td>POP DST</td>
+<td>将栈顶的数据弹出并存至 DST</td>
+</tr>
+<tr>
+<td>CALL</td>
+<td>调用指令</td>
+<td>CALL PTR</td>
+<td>将程序当前执行位置IP压栈并转移到调用的子程序，相当于 push ip ， jmp near ptr</td>
+</tr>
+<tr>
+<td>RET</td>
+<td>返回指令</td>
+<td>RET</td>
+<td>将栈顶数据弹出至 ip，相当于pop ip</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<h1 id="pwntools使用" class="headerLink">
+    <a href="#pwntools%e4%bd%bf%e7%94%a8" class="header-mark"></a>Pwntools使用</h1><p>官方文档 <a href="http://docs.pwntools.com/en/latest/" target="_blank" rel="noopener noreffer">http://docs.pwntools.com/en/latest/</a></p>
+<h2 id="连接" class="headerLink">
+    <a href="#%e8%bf%9e%e6%8e%a5" class="header-mark"></a>连接</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1">#导入pwn模块</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="s2">&#34;域名或ip&#34;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="c1">#连接指定的地址和端口，用于远程连接</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s1">&#39;./filename&#39;</span><span class="p">)</span>    <span class="c1">#连接本地环境，用于本地调试</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">gdb</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="c1">#用于gdb调试</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="context" class="headerLink">
+    <a href="#context" class="header-mark"></a>context</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">os</span><span class="o">=</span><span class="s1">&#39;linux&#39;</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="s1">&#39;amd64&#39;</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span> <span class="c1">#设置日志级别</span>
+</span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s1">&#39;amd64&#39;</span>      <span class="c1">#设置架构</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="io" class="headerLink">
+    <a href="#io" class="header-mark"></a>IO</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1">#发送data</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1">#发送data，并换行（相当于末尾\n）</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="c1">#接收到string后, 再发送data</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">recvn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>   <span class="c1">#接收 N(数字) 字符</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span> <span class="c1">#接收一行输出</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="c1">#接收到string为止</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span> <span class="c1">#与shell交互</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="打解包" class="headerLink">
+    <a href="#%e6%89%93%e8%a7%a3%e5%8c%85" class="header-mark"></a>打/解包</h2><p>将data打/解包成32/64位的小端序的值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p32</span><span class="o">/</span><span class="n">p64</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">u32</span><span class="o">/</span><span class="n">u64</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="elf" class="headerLink">
+    <a href="#elf" class="header-mark"></a>ELF</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">elf</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./filename&#34;</span><span class="p">)</span>     <span class="c1">#加载ELF文件信息</span>
+</span></span><span class="line"><span class="cl"><span class="n">elf</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;a_function&#39;</span><span class="p">]</span> <span class="c1">#找到 a_function的函数地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">elf</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;a_function&#39;</span><span class="p">]</span>     <span class="c1">#找到 a_function的got表地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">elf</span><span class="o">.</span><span class="n">plt</span><span class="p">[</span><span class="s1">&#39;a_function&#39;</span><span class="p">]</span>     <span class="c1">#找到 a_function 的 plt表的地址</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="shellcraft" class="headerLink">
+    <a href="#shellcraft" class="header-mark"></a>shellcraft</h2><p>shellcraft模块生成shellcode</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">shellcraft</span><span class="o">.</span><span class="n">sh</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcraft</span><span class="o">.</span><span class="n">i386</span><span class="o">.</span><span class="n">linux</span><span class="o">.</span><span class="n">sh</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">shellcraft</span><span class="o">.</span><span class="n">amd64</span><span class="o">.</span><span class="n">linux</span><span class="o">.</span><span class="n">sh</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br/>
+<h1 id="参考" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83" class="header-mark"></a>参考</h1><p><a href="https://www.yuque.com/hxfqg9/bin/hg3qeh" target="_blank" rel="noopener noreffer">PWN虚拟机配置</a>
+<a href="https://firmianay.gitbooks.io/ctf-all-in-one/doc/4.4_gcc_sec.html" target="_blank" rel="noopener noreffer">CTF ALL IN ONE</a>
+<a href="https://blog.csdn.net/qq_41115702/article/details/82763383" target="_blank" rel="noopener noreffer">汇编语言之寄存器总结</a>
+<a href="https://blog.csdn.net/qq_36982160/article/details/82950848" target="_blank" rel="noopener noreffer">汇编常用指令</a></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-25</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/php%E5%9F%BA%E7%A1%80/" class="prev" rel="prev" title="PHP知识小结"><i class="fas fa-angle-left fa-fw"></i>PHP知识小结</a>
+            <a href="/basicrop/" class="next" rel="next" title="Basic ROP">Basic ROP<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.96.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">高诺琪</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/fuse/fuse.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/topbar/topbar.min.js"></script><script type="text/javascript" src="/lib/pjax/pjax.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+
+<div class="pjax-assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":100},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":true,"location":0,"maxResultLength":6,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":10,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"table":{"sort":true}};</script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript></div>
+</body>
+
+</html>
