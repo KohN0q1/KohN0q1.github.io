@@ -31,7 +31,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/KohN0q1.github.io\/kerberos%E8%AE%A4%E8%AF%81\/"
-        },"genre": "posts","wordcount":  2371 ,
+        },"genre": "posts","wordcount":  2407 ,
         "url": "https:\/\/KohN0q1.github.io\/kerberos%E8%AE%A4%E8%AF%81\/","datePublished": "2022-04-05T21:25:46+08:00","dateModified": "2022-04-05T21:25:46+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -134,7 +134,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="/" title="Author" rel=" author" class="author">高诺琪</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%86%85%E7%BD%91/"><i class="far fa-folder fa-fw"></i>内网</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-04-05">2022-04-05</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-04-05">2022-04-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2371 字&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-04-05">2022-04-05</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-04-05">2022-04-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2407 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -159,14 +159,17 @@
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h2 id="kerberos认证" class="headerLink">
+            </div><div class="content" id="content"></br>
+<h2 id="kerberos认证" class="headerLink">
     <a href="#kerberos%e8%ae%a4%e8%af%81" class="header-mark"></a>Kerberos认证</h2><p>Kerberos是一种计算机网络授权协议，由麻省理工研发，一词来源于古希腊神话中的地狱三头犬。Kerberos 由以下三部分组成：客户机、服务器以及可信的第三方（称为 Kerberos 密钥分发中心，KDC）。KDC 提供认证和凭单授予服务。</p>
+</br>
 <h3 id="名词解释" class="headerLink">
     <a href="#%e5%90%8d%e8%af%8d%e8%a7%a3%e9%87%8a" class="header-mark"></a>名词解释</h3><p><strong>DC（Domain Controller）</strong>：域控制器</p>
 <p><strong>KDC（Key Distribution Center）</strong>： 密钥分发中心，其中包含AS和TGS，由DC担任</p>
 <p><strong>AS（Authentication Server）</strong>：身份认证服务器</p>
 <p><strong>TGS（Ticket Granting Server）</strong>： 票证授予服务器</p>
 <p><strong>AD（Account Database）</strong>：活动目录，安装AD的服务器为DC（域控）</p>
+</br>
 <p><strong>TGT（Ticket Granting Ticket）</strong>： 票据授权票据</p>
 <p><strong>SS（Service Server）</strong>： 特定服务提供端</p>
 <p><strong>Session key</strong>：短期会话密钥（临时秘钥），内容是随机生成的</p>
@@ -174,6 +177,7 @@
 <p><strong>Ticket</strong>：票据</p>
 <p><strong>Client</strong>：客户端</p>
 <p><strong>Server</strong>：服务端</p>
+</br  >
 <h3 id="整体流程" class="headerLink">
     <a href="#%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b" class="header-mark"></a>整体流程</h3><p>Kerberos认证可以分为三部分（六小步）</p>
 <ol>
@@ -197,22 +201,23 @@
 <p><img
         class="lazyload"
         data-src="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220122215417625.png"
-        data-srcset="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220122215417625.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220122215417625.png 1.5x, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220122215417625.png 2x"
+        data-srcset="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220122215417625.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220122215417625.png 1.5x, /Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220122215417625.png 2x"
         data-sizes="auto"
-        alt="/Kerberos认证.assets/image-20220122215417625.png"
+        alt="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220122215417625.png"
         title="image-20220122215417625"></p>
 </li>
 </ol>
 <p>这是我理解的Kerberos认证的整体流程。</p>
+</br>
 <h3 id="具体流程" class="headerLink">
     <a href="#%e5%85%b7%e4%bd%93%e6%b5%81%e7%a8%8b" class="header-mark"></a>具体流程</h3><h4 id="client与as" class="headerLink">
     <a href="#client%e4%b8%8eas" class="header-mark"></a>Client与AS</h4><p>目的：AS对client进行认证，返回TGT给client。</p>
 <p><img
         class="lazyload"
         data-src="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123210556311.png"
-        data-srcset="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123210556311.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123210556311.png 1.5x, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123210556311.png 2x"
+        data-srcset="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123210556311.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123210556311.png 1.5x, /Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123210556311.png 2x"
         data-sizes="auto"
-        alt="/Kerberos认证.assets/image-20220123210556311.png"
+        alt="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123210556311.png"
         title="image-20220123210556311"></p>
 <ol>
 <li>
@@ -228,14 +233,15 @@
 <p>client收到AS返回来的<strong>AS_REP</strong>，用自己（client）的NTML hash将session key（AS）解密出来，而TGT则无法解密，因为client没有krbtgt的NTML hash。</p>
 </li>
 </ol>
+</br>
 <h4 id="client与tgs" class="headerLink">
     <a href="#client%e4%b8%8etgs" class="header-mark"></a>Client与TGS</h4><p>目的：TGS对client进行认证，返回Ticket给client。</p>
 <p><img
         class="lazyload"
         data-src="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123231515825.png"
-        data-srcset="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123231515825.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123231515825.png 1.5x, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123231515825.png 2x"
+        data-srcset="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123231515825.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123231515825.png 1.5x, /Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123231515825.png 2x"
         data-sizes="auto"
-        alt="/Kerberos认证.assets/image-20220123231515825.png"
+        alt="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123231515825.png"
         title="image-20220123231515825"></p>
 <ol>
 <li>
@@ -251,14 +257,15 @@
 <p>client收到TGS返回来的<strong>TGS_REP</strong>，用session key（AS）来解密得到server session key，同样无法解密Ticket，因为client没有server NTML hash。</p>
 </li>
 </ol>
+</br>
 <h4 id="client与server" class="headerLink">
     <a href="#client%e4%b8%8eserver" class="header-mark"></a>Client与Server</h4><p>目的：Server对client进行认证，获取访问Server的权限</p>
 <p><img
         class="lazyload"
         data-src="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123235916295.png"
-        data-srcset="/Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123235916295.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123235916295.png 1.5x, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123235916295.png 2x"
+        data-srcset="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123235916295.png, /Kerberos%e8%ae%a4%e8%af%81.assets/image-20220123235916295.png 1.5x, /Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123235916295.png 2x"
         data-sizes="auto"
-        alt="/Kerberos认证.assets/image-20220123235916295.png"
+        alt="/Kerberos%E8%AE%A4%E8%AF%81.assets/image-20220123235916295.png"
         title="image-20220123235916295"></p>
 <ol>
 <li>（基本算是故技重施了）client要想访问server，则会发送一个<strong>AP_REQ</strong>，里面包含前面发送的Ticket和用server session key（也就是TGS生成的session key）加密的时间戳、client info和server info等信息。</li>
@@ -266,13 +273,14 @@
 <li>通过验证之后会返回一个<strong>AP_REP</strong>，内容是server session key加密的时间戳给client。</li>
 <li>client收到<strong>AP_REP</strong>，通过缓存的server session key解密得到时间戳，成功通过验证则与服务器信息通信，同时票据也会存在client的内存当中。</li>
 </ol>
+</br>
 <h3 id="参考资料" class="headerLink">
     <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" class="header-mark"></a>参考资料</h3><p><a href="https://www.freebuf.com/articles/web/290907.html" target="_blank" rel="noopener noreffer">https://www.freebuf.com/articles/web/290907.html</a></p>
 <p><a href="https://www.freebuf.com/articles/network/273725.html" target="_blank" rel="noopener noreffer">https://www.freebuf.com/articles/network/273725.html</a></p>
 <p><a href="https://www.bilibili.com/video/BV1S4411q7Cw" target="_blank" rel="noopener noreffer">https://www.bilibili.com/video/BV1S4411q7Cw</a></p>
-<p><a href="https://payloads.online/archivers/2018-11-30/1/#%E5%9F%9F%E8%AE%A4%E8%AF%81%E6%89%80%E5%8F%82%E4%B8%8E%E7%9A%84%E8%A7%92%E8%89%B2-%E4%B8%89%E5%8F%AA%E7%8B%97%E5%A4%B4" target="_blank" rel="noopener noreffer">https://payloads.online/archivers/2018-11-30/1/#%E5%9F%9F%E8%AE%A4%E8%AF%81%E6%89%80%E5%8F%82%E4%B8%8E%E7%9A%84%E8%A7%92%E8%89%B2-%E4%B8%89%E5%8F%AA%E7%8B%97%E5%A4%B4</a></p>
-<p><a href="https://evilh2o2.github.io/2019/08/25/Windows%E5%9F%9F%E8%AE%A4%E8%AF%81%E4%BD%93%E7%B3%BB%E2%80%94Kerberos%E8%AE%A4%E8%AF%81/" target="_blank" rel="noopener noreffer">https://evilh2o2.github.io/2019/08/25/Windows%E5%9F%9F%E8%AE%A4%E8%AF%81%E4%BD%93%E7%B3%BB%E2%80%94Kerberos%E8%AE%A4%E8%AF%81/</a></p>
 <p><a href="https://docs.microsoft.com/zh-cn/archive/blogs/apgceps/packerberos-2" target="_blank" rel="noopener noreffer">https://docs.microsoft.com/zh-cn/archive/blogs/apgceps/packerberos-2</a></p>
+<p><a href="https://payloads.online/archivers/2018-11-30/1/#%E5%9F%9F%E8%AE%A4%E8%AF%81%E6%89%80%E5%8F%82%E4%B8%8E%E7%9A%84%E8%A7%92%E8%89%B2-%E4%B8%89%E5%8F%AA%E7%8B%97%E5%A4%B4" target="_blank" rel="noopener noreffer">域认证所参与的角色 (三只狗头)</a></p>
+<p><a href="https://evilh2o2.github.io/2019/08/25/Windows%E5%9F%9F%E8%AE%A4%E8%AF%81%E4%BD%93%E7%B3%BB%E2%80%94Kerberos%E8%AE%A4%E8%AF%81/" target="_blank" rel="noopener noreffer">Windows域认证体系—Kerberos认证</a></p>
 </div>
 
         <div class="post-footer" id="post-footer">
@@ -299,7 +307,7 @@
     </div>
 
     <div class="post-nav">
-            <a href="/first_post/" class="next" rel="next" title="First_post">First_post<i class="fas fa-angle-right fa-fw"></i></a></div>
+            <a href="/first_post/" class="next" rel="next" title="Hello World">Hello World<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"></div></article></div>
         </main><footer class="footer">

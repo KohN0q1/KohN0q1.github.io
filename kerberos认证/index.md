@@ -1,10 +1,12 @@
 # Kerberos认证
 
+</br>
 
 ## Kerberos认证
 
 Kerberos是一种计算机网络授权协议，由麻省理工研发，一词来源于古希腊神话中的地狱三头犬。Kerberos 由以下三部分组成：客户机、服务器以及可信的第三方（称为 Kerberos 密钥分发中心，KDC）。KDC 提供认证和凭单授予服务。
 
+</br>
 
 ### 名词解释
 
@@ -19,7 +21,7 @@ Kerberos是一种计算机网络授权协议，由麻省理工研发，一词来
 **AD（Account Database）**：活动目录，安装AD的服务器为DC（域控）
 
 
-
+</br>
 
 
 **TGT（Ticket Granting Ticket）**： 票据授权票据
@@ -37,6 +39,7 @@ Kerberos是一种计算机网络授权协议，由麻省理工研发，一词来
 **Server**：服务端
 
 
+</br  >
 
 ### 整体流程
 
@@ -58,8 +61,10 @@ Kerberos认证可以分为三部分（六小步）
 这是我理解的Kerberos认证的整体流程。
 
 
+</br>
 
 ### 具体流程
+
 
 #### Client与AS
 
@@ -75,7 +80,7 @@ Kerberos认证可以分为三部分（六小步）
 
 4. client收到AS返回来的**AS_REP**，用自己（client）的NTML hash将session key（AS）解密出来，而TGT则无法解密，因为client没有krbtgt的NTML hash。
 
-
+</br>
 
 #### Client与TGS
 
@@ -90,7 +95,7 @@ Kerberos认证可以分为三部分（六小步）
 3. 如果没问题，TGS会返回一个**TGS_REP**给client，里面包含一个session key（TGS生成，用于与server进行通信，称为server session key，与上面AS生成的session key不一样），然后再用之前的session key（AS）加密这个 server session，还有一个Ticket（经过server的NTML hash加密过的server session key、client info，end time ），其中end time是Ticket到期时间。
 4. client收到TGS返回来的**TGS_REP**，用session key（AS）来解密得到server session key，同样无法解密Ticket，因为client没有server NTML hash。
 
-
+</br>
 
 #### Client与Server
 
@@ -103,7 +108,7 @@ Kerberos认证可以分为三部分（六小步）
 3. 通过验证之后会返回一个**AP_REP**，内容是server session key加密的时间戳给client。
 4. client收到**AP_REP**，通过缓存的server session key解密得到时间戳，成功通过验证则与服务器信息通信，同时票据也会存在client的内存当中。
 
-
+</br>
 
 ### 参考资料
 
@@ -113,9 +118,11 @@ https://www.freebuf.com/articles/network/273725.html
 
 https://www.bilibili.com/video/BV1S4411q7Cw
 
-https://payloads.online/archivers/2018-11-30/1/#%E5%9F%9F%E8%AE%A4%E8%AF%81%E6%89%80%E5%8F%82%E4%B8%8E%E7%9A%84%E8%A7%92%E8%89%B2-%E4%B8%89%E5%8F%AA%E7%8B%97%E5%A4%B4
-
-https://evilh2o2.github.io/2019/08/25/Windows%E5%9F%9F%E8%AE%A4%E8%AF%81%E4%BD%93%E7%B3%BB%E2%80%94Kerberos%E8%AE%A4%E8%AF%81/
-
 https://docs.microsoft.com/zh-cn/archive/blogs/apgceps/packerberos-2
+
+[域认证所参与的角色 \(三只狗头\)](https://payloads.online/archivers/2018-11-30/1/#%E5%9F%9F%E8%AE%A4%E8%AF%81%E6%89%80%E5%8F%82%E4%B8%8E%E7%9A%84%E8%A7%92%E8%89%B2-%E4%B8%89%E5%8F%AA%E7%8B%97%E5%A4%B4)
+
+[Windows域认证体系—Kerberos认证](https://evilh2o2.github.io/2019/08/25/Windows%E5%9F%9F%E8%AE%A4%E8%AF%81%E4%BD%93%E7%B3%BB%E2%80%94Kerberos%E8%AE%A4%E8%AF%81/)
+
+
 
