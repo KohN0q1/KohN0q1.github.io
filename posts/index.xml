@@ -5,10 +5,10 @@
         <description>所有文章 | 高诺琪&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 06 Apr 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://KohN0q1.github.io/posts/" rel="self" type="application/rss+xml" /><item>
     <title>Hello World</title>
-    <link>https://KohN0q1.github.io/first_post/</link>
+    <link>https://KohN0q1.github.io/hello-world/</link>
     <pubDate>Wed, 06 Apr 2022 00:00:00 &#43;0000</pubDate><author>
         <name>高诺琪</name>
-    </author><guid>https://KohN0q1.github.io/first_post/</guid>
+    </author><guid>https://KohN0q1.github.io/hello-world/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Kerberos认证</title>
